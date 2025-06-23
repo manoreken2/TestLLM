@@ -3,11 +3,14 @@ import argparse
 import io
 
 def query(in_text, model_name, tgt_lang):
-    print(f"{in_text}\n")
+    prompt = \
+      f'Translate the text enclosed with triplequote to {tgt_lang}. Enclose the translated text with triplequote. ```{in_text}``` ' \
+      f'Translate the text enclosed with triplequote to {tgt_lang}. Enclose the translated text with triplequote.'
+
+    print(f"{prompt}\n")
 
     result = ollama.generate(model=model_name, \
-                             prompt=f'Translate the text enclosed with triplequote to {tgt_lang}. Enclose the translated text with triplequote. ```{in_text}``` " \
-                                     "Translate the text enclosed with triplequote to {tgt_lang}. Enclose the translated text with triplequote.')
+                             prompt=prompt)
     out_text = result['response']
 
     print(f"{out_text}\n")
@@ -30,11 +33,13 @@ def main():
     # 入力文書を文単位で区切って、2048文字程度の文の束に分割。
     # q_text_list: the list of original text sentences.
     in_text_list = []
-    with io.open(args.input, mode="r", encoding="utf-8") as r:
-        in_text = ""
-        
+    with io.open(args.input, mode="r", encoding="utf-8") as r:        
+        whole_text = ""
         for line in r.readlines():
-            for t in line.strip().split('.'):
+            whole_text += line.strip() + ' '
+
+        in_text = ""
+        for t in whole_text.split('.'):
                 in_text += t + '. '
                 if args.q_text_limit <= len(in_text):
                     in_text_list.append(in_text)

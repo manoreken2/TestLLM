@@ -65,6 +65,8 @@ def main():
             #i = i+1
             #if 3 < i:
             #    return
+            w.flush()
+            
         w.write("</table>\n")
 
 if __name__ == "__main__":

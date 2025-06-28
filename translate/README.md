@@ -9,6 +9,8 @@ long text translator using ollama LLM
 
 # Setup on Windows platforms
 
+0. Enable developer mode to use symlinks https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development
+
 1. Download and install ollama. https://ollama.com/download
 
 2. Then start command prompt and type

@@ -52,21 +52,31 @@ def main():
         i=0
 
         w.write(f'Input text file: {args.input}<br>\nTranslater model: {args.model_name}<br>\n')
-
         w.write('<table border="1"><br>\n')
-        w.write(f"<tr><td>input text</td><td>{args.tgt_lang} translated text</td></tr>\n")
+
+        s = f"<tr><td>input text</td><td><thoughts></td><td></td><td>{args.tgt_lang} translated text</td><td>extra comments</td></tr>\n"
+        w.write(s)
 
         for in_text in in_text_list:
             out_text = query(in_text, args.model_name, args.tgt_lang)
 
-            w.write(f"\n<tr><td>\n{in_text}\n</td><td>\n{out_text}\n</td></tr>\n")
+            out_text = out_text.replace("<think>", "")
+            out_text = out_text.replace("</think>", "\n</span></td><td><span style=\"white-space: pre-wrap;\">\n")
+            out_text = out_text.replace("'''", "\n</span></td><td><span style=\"white-space: pre-wrap;\">\n")
+            out_text = out_text.replace('"""', "\n</span></td><td><span style=\"white-space: pre-wrap;\">\n")
+            out_text = out_text.replace("```", "\n</span></td><td><span style=\"white-space: pre-wrap;\">\n")
+
+            s = f"\n<tr><td><span style=\"white-space: pre-wrap;\">\n{in_text}\n</span></td><td><span style=\"white-space: pre-wrap;\">\n{out_text}\n</span></td></tr>\n"
+            w.write(s)
 
             # 動作テストのため、数個推論し終了。
-            #i = i+1
-            #if 3 < i:
+            #if 10 <= i:
             #    return
-            w.flush()
             
+            w.flush()
+            i = i+1
+            
+
         w.write("</table>\n")
 
 if __name__ == "__main__":

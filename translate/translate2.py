@@ -79,8 +79,8 @@ def main():
             w.write(s)
 
             # 動作テストのため、数回推論し終了。
-            if 10 <= i:
-                return
+            #if 10 <= i:
+            #    return
             
             w.flush()
             i = i+1

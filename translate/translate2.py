@@ -17,7 +17,6 @@ def query(in_text, model_name, tgt_lang):
     return out_text
 
 def main():
-
     # print(ollama.list().get('models', []))
 
     parser = argparse.ArgumentParser("translate")
@@ -54,30 +53,40 @@ def main():
         w.write(f'Input text file: {args.input}<br>\nTranslater model: {args.model_name}<br>\n')
         w.write('<table border="1"><br>\n')
 
-        s = f"<tr><td>input text</td><td><thoughts></td><td></td><td>{args.tgt_lang} translated text</td><td>extra comments</td></tr>\n"
+        s = f"<tr><td>input text</td><td><thoughts></td><td>{args.tgt_lang} translated text</td><td>extra comments</td></tr>\n"
         w.write(s)
 
         for in_text in in_text_list:
             out_text = query(in_text, args.model_name, args.tgt_lang)
 
-            out_text = out_text.replace("<think>", "")
-            out_text = out_text.replace("</think>", "\n</span></td><td><span style=\"white-space: pre-wrap;\">\n")
-            out_text = out_text.replace("'''", "\n</span></td><td><span style=\"white-space: pre-wrap;\">\n")
-            out_text = out_text.replace('"""', "\n</span></td><td><span style=\"white-space: pre-wrap;\">\n")
-            out_text = out_text.replace("```", "\n</span></td><td><span style=\"white-space: pre-wrap;\">\n")
+            # column begin/end tag
+            tdBgn='<td><span style=\"white-space: pre-wrap;\">'
+            tdEnd='</span></td>'
 
-            s = f"\n<tr><td><span style=\"white-space: pre-wrap;\">\n{in_text}\n</span></td><td><span style=\"white-space: pre-wrap;\">\n{out_text}\n</span></td></tr>\n"
+            # out_textは、<think>考察</think> '''訳文'''考察2
+            # の形式で戻る。トリプルクォートの字が数種類ある。
+            # 稀に考察の中にトリプルクォートが現れることがあり、その場合列が増えてズレが発生するため
+            # 出力ファイルを観察し手動修正する必要あり。
+            # 考察2は省略される場合があるがこれは問題ない。
+            out_text = out_text.replace("<think>", "")
+            out_text = out_text.replace("</think>", "")
+            out_text = out_text.replace("'''", f"\n{tdEnd}{tdBgn}\n")
+            out_text = out_text.replace('"""', f"\n{tdEnd}{tdBgn}\n")
+            out_text = out_text.replace("```", f"\n{tdEnd}{tdBgn}\n")
+
+            s = f"\n<tr>{tdBgn}\n{in_text}\n{tdEnd}" + \
+                      f"{tdBgn}\n{out_text}\n{tdEnd}\n"
             w.write(s)
 
-            # 動作テストのため、数個推論し終了。
-            #if 10 <= i:
-            #    return
+            # 動作テストのため、数回推論し終了。
+            if 10 <= i:
+                return
             
             w.flush()
             i = i+1
             
-
         w.write("</table>\n")
+
 
 if __name__ == "__main__":
     main()

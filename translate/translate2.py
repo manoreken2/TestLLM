@@ -33,13 +33,15 @@ def main():
     # q_text_list: the list of original text sentences.
     in_text_list = []
     with io.open(args.input, mode="r", encoding="utf-8") as r:        
+        # 1行づつ読み、1個の文字列whole_textに連結。
         whole_text = ""
         for line in r.readlines():
-            whole_text += line.strip() + ' '
+            whole_text += line.strip() + '\n'
 
+        # 句点で文字列を分割。規定文字数の文の束in_text_listを作成。
         in_text = ""
-        for t in whole_text.split('.'):
-                in_text += t + '. '
+        for t in whole_text.split(args.sentence_delimiter):
+                in_text += t + args.sentence_delimiter
                 if args.q_text_limit <= len(in_text):
                     in_text_list.append(in_text)
                     in_text = ""

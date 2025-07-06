@@ -55,7 +55,7 @@ def main():
         w.write(f'Input text file: {args.input}<br>\nTranslater model: {args.model_name}<br>\n')
         w.write('<table border="1"><br>\n')
 
-        s = f"<tr><td>input text</td><td><thoughts></td><td>{args.tgt_lang} translated text</td><td>extra comments</td></tr>\n"
+        s = f"<tr><td>input text</td><td>thoughts</td><td>{args.tgt_lang} translated text</td><td>extra comments</td></tr>\n"
         w.write(s)
 
         for in_text in in_text_list:

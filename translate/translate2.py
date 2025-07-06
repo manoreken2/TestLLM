@@ -1,13 +1,14 @@
 import ollama
 import argparse
 import io
+import time    
 
 def query(in_text, model_name, tgt_lang):
     prompt = \
       f'Translate the text enclosed with triplequote to {tgt_lang}. Enclose the translated text with triplequote. ```{in_text}``` ' \
       f'Translate the text enclosed with triplequote to {tgt_lang}. Enclose the translated text with triplequote.'
 
-    print(f"{prompt}\n")
+    # print(f"{prompt}\n")
 
     result = ollama.generate(model=model_name, \
                              prompt=prompt)
@@ -18,6 +19,7 @@ def query(in_text, model_name, tgt_lang):
 
 def main():
     # print(ollama.list().get('models', []))
+    start_time = int(time.time())
 
     parser = argparse.ArgumentParser("translate")
     parser.add_argument("--input",              help="Original plain text file to translate to.", type=str)
@@ -47,6 +49,10 @@ def main():
                     in_text = ""
         if 0 < len(in_text):
             in_text_list.append(in_text)
+
+    begin_time = int(time.time())
+    print(f" Preprocessing took {begin_time - start_time} sec.")
+    print(f" Inference begin.")
 
     # 翻訳実行、結果をHTML形式で保存する。
     with io.open(args.output, mode="w", encoding="utf-8") as w:
@@ -80,14 +86,22 @@ def main():
                       f"{tdBgn}\n{out_text}\n{tdEnd}\n"
             w.write(s)
 
+            # 経過時間表示。
+            now_time = int(time.time())
+            print(f" Inference {i} took {now_time-begin_time} sec.")
+            begin_time = now_time
+
             # 動作テストのため、数回推論し終了。
-            #if 10 <= i:
-            #    return
-            
+            #if 3 <= i:
+            #    break
+
             w.flush()
             i = i+1
             
         w.write("</table>\n")
+    
+    finish_time = int(time.time())
+    print(f" Elapsed time: {finish_time - start_time} sec.")
 
 
 if __name__ == "__main__":

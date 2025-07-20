@@ -39,7 +39,12 @@ long text translator using ollama LLM
         python translate2.py --input=inferno_SV.txt --tgt_lang="Modern English" --output=inferno_EN_32b.html
 
 
+## TranslateDirFiles
 
+Batch translates all text files on the specified folder.
+
+        python translateDirFiles.py --input_dir=sikyou --tgt_lang=`Modern Japanese with commentary` --model_name=DeepSeek-R1:671b-0528-q4_K_M --output_file=sikyou_translated.html
+        
 
 
 

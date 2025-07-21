@@ -1,5 +1,7 @@
 # TestLLM
-LLM inference test programs
 
-See subdirectories
+Programs utilize Ollama LLM inference
 
+See subdirectories:
+
+Translate long text https://github.com/manoreken2/TestLLM/tree/main/translate

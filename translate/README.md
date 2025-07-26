@@ -48,7 +48,11 @@ Batch translates all text files on the specified folder.
         python translateDirFiles.py --input_dir=sikyou --tgt_lang=`Modern Japanese with commentary` --model_name=DeepSeek-R1:671b-0528-q4_K_M --output_file=sikyou_translated.html
         
 
-Translation output example: https://manoreken2.github.io/TestLLM/translate/sikyou_671b_0528_q4.html
+Translation output example:
+詩経
+ https://manoreken2.github.io/TestLLM/translate/sikyou_671b_0528_q4.html
+詩経 summary
+ https://manoreken2.github.io/TestLLM/translate/sikyou_summary.html
 
 
 

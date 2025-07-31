@@ -19,7 +19,7 @@ def query(in_text, model_name, tgt_lang):
 
 def main():
     # print(ollama.list().get('models', []))
-    start_time = int(time.time())
+    start_time = time.time()
 
     parser = argparse.ArgumentParser("translate")
     parser.add_argument("--input",              help="Original plain text file to translate to.", type=str)
@@ -50,8 +50,8 @@ def main():
         if 0 < len(in_text):
             in_text_list.append(in_text)
 
-    begin_time = int(time.time())
-    print(f" Preprocessing took {begin_time - start_time} sec.")
+    begin_time = time.time()
+    print(f" Preprocessing took {(begin_time - start_time):.3f} sec.")
     print(f" Inference begin.")
 
     # 翻訳実行、結果をHTML形式で保存する。
@@ -87,8 +87,8 @@ def main():
             w.write(s)
 
             # 経過時間表示。
-            now_time = int(time.time())
-            print(f" Inference {i} took {now_time-begin_time} sec.")
+            now_time = time.time()
+            print(f" Inference {i+1} of {len(in_text_list)} took {(now_time-begin_time):.3f} sec.")
             begin_time = now_time
 
             # 動作テストのため、数回推論し終了。
@@ -100,8 +100,8 @@ def main():
             
         w.write("</table>\n")
     
-    finish_time = int(time.time())
-    print(f" Elapsed time: {finish_time - start_time} sec.")
+    finish_time = time.time()
+    print(f" Elapsed time: {(finish_time - start_time):.3f} sec.")
 
 
 if __name__ == "__main__":

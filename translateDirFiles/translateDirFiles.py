@@ -19,7 +19,7 @@ def query(in_text, model_name, tgt_lang):
     return out_text
 
 def translate_one_file(args, in_file_name, w):
-    begin_time = int(time.time())
+    checkpoint_time = time.time()
 
     # 入力文書を文単位で区切って、2048文字程度の文の束に分割。
     # q_text_list: the list of original text sentences.
@@ -79,19 +79,18 @@ def translate_one_file(args, in_file_name, w):
         w.write(s)
 
         # 経過時間表示。
-        now_time = int(time.time())
-        print(f" Inference {i} took {now_time-begin_time} sec.")
-        begin_time = now_time
+        now_time = time.time()
+        print(f" Inference {i} took {(now_time - checkpoint_time):.3f} sec.")
+        checkpoint_time = now_time
 
         w.flush()
         i = i+1
         
     w.write("</table><br>\n")
 
-
 def main():
     # print(ollama.list().get('models', []))
-    start_time = int(time.time())
+    start_time = time.time()
 
     parser = argparse.ArgumentParser("translate")
     parser.add_argument("--input_dir",          help="Directory contains original plain text files to translate to.", type=str)
@@ -108,9 +107,9 @@ def main():
         for in_file in glob.glob(args.input_dir + '/*.txt'):
             translate_one_file(args, in_file, w)
 
-    finish_time = int(time.time())
-    print(f" Elapsed time: {finish_time - start_time} sec.")
-
+        txt = f"Translation task took {(time.time() - start_time):.3f} sec."
+        w.write(txt)
+        print(txt)
 
 if __name__ == "__main__":
     main()

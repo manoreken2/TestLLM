@@ -11,7 +11,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": [ "--input_dir=sikyou", "--tgt_lang=`Modern Japanese with commentary`",  "--model_name=DeepSeek-R1:671b-0528-q4_K_M", "--output_file=sikyou_translated.html" ]
+            "args": [ "--input=test/Edith_Wharton_The_verdict.txt", "--tgt_lang=`Modern Japanese`", "--output=Edith_Wharton_The_verdict_JP_32b.html",  "--model_name=DeepSeek-R1:32b" ]
         }
     ]
 }

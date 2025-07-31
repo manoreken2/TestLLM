@@ -39,11 +39,11 @@ Batch translates all text files on the specified folder.
 Translation output example:
 
 Test input data 詩経
- https://manoreken2.github.io/TestLLM/translateDirFiles/sikyou
+ https://github.com/manoreken2/TestLLM/tree/main/translateDirFiles/sikyou
 
 詩経 batch translation output
  https://manoreken2.github.io/TestLLM/translateDirFiles/sikyou_671b_0528_q4.html
-詩経 summary
+詩経 summary by DeepSeek-R1:671b-0528
  https://manoreken2.github.io/TestLLM/translateDirFiles/sikyou_summary.html
 
 

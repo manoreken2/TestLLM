@@ -38,7 +38,7 @@ Long text translator using ollama LLM generative AI
         conda activate TestLLM
         python translateLongTxt.py --input=test/inferno_SV.txt --tgt_lang="Modern English" --output=inferno_EN_32b.html
 
-Translation input example: https://manoreken2.github.io/TestLLM/translateLongTxt/test/Inferno_SV.txt
+Translation input example: https://github.com/manoreken2/TestLLM/blob/main/translateLongTxt/test/inferno_SV.txt
 Translation output example: https://manoreken2.github.io/TestLLM/translateLongTxt/test/Strindberg_Inferno_JP_DeepSeekR1_671b_0528_q8.html
 
 

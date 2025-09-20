@@ -1,10 +1,32 @@
 # 02_train.pyが読むtrain設定ファイルです。
 
-- name: Kappa_Small_o200k_ep50_drop0
+# - name: Kappa_Small_o200k_ep50_drop0
+#   model: GPT2_Small
+#   tokenizer: o200k_base
+#   train_txt: kappa.txt
+#   test_txt: kappa_test.txt
+#   epochs: 50
+#   checkpoint_count: 10
+#   drop_rate: 0.0
+#   initial_lr: 0.0001
+#   peak_lr: 0.001
+
+- name: Akuragawa_Small_o200k_ep50_drop0
   model: GPT2_Small
   tokenizer: o200k_base
-  train_txt: kappa.txt
-  test_txt: kappa_test.txt
+  train_txt: Akutagawa.txt
+  test_txt: Akutagawa_test.txt
+  epochs: 50
+  checkpoint_count: 10
+  drop_rate: 0.0
+  initial_lr: 0.0001
+  peak_lr: 0.001
+
+- name: Akuragawa_Small_o200k_ep50_drop01
+  model: GPT2_Small
+  tokenizer: o200k_base
+  train_txt: Akutagawa.txt
+  test_txt: Akutagawa_test.txt
   epochs: 50
   checkpoint_count: 10
   drop_rate: 0.0
@@ -137,7 +159,7 @@
   model: GPT2_Large
   tokenizer: o200k_base
   train_txt: Akutagawa.txt
-  test_txt: kappa_test.txt
+  test_txt: Akutagawa_test.txt
   train_val_ratio: 0.95
   epochs: 50
   checkpoint_count: 5

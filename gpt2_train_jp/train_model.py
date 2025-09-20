@@ -105,9 +105,9 @@ def train_model(name, model, train_loader, val_loader, optimizer, device,
     save_model_opt(model, optimizer, f"chkpt_{name}/ep{epoch+1}.pth")
 
     # Generate and print a sample from the model to monitor progress
-    for test_txt in test_txt_list:
-        generate_and_print_sample(model, tokenizer, device, test_txt, test_output_tokens)
-        #generate_and_print_sample2(model, tokenizer, device, test_txt, test_output_tokens)
+    with open(f'Predicts_{name}.txt', 'w', encoding='utf-8') as f:
+        for test_txt in test_txt_list:
+            generate_and_print_sample(f, model, tokenizer, device, test_txt, test_output_tokens)
 
     return train_losses, val_losses, track_tokens_seen, track_lrs
 

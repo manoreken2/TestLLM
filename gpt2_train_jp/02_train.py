@@ -28,7 +28,7 @@ def Train(device, conf):
         test_txt_list = [line.rstrip() for line in file]
 
     n_epochs = conf['epochs'] # 15
-    checkpoint_count = 5 # 5
+    checkpoint_count = conf['checkpoint_count'] # 5
     checkpoint_epoch_interval = int(n_epochs / checkpoint_count)
     assert(0 == (n_epochs % checkpoint_epoch_interval))
 

@@ -312,7 +312,7 @@ def generate(model, idx, max_new_tokens, temperature=0.0, top_k=None, eos_id=Non
     return idx
 
 
-def generate_and_print_sample(model, tokenizer, device, start_context, max_new_tokens):
+def generate_and_print_sample(f, model, tokenizer, device, start_context, max_new_tokens):
     model.eval() # ドロップアウト率を0にする。
 
     context_size = model.pos_emb.weight.shape[0]
@@ -322,7 +322,9 @@ def generate_and_print_sample(model, tokenizer, device, start_context, max_new_t
             model=model, idx=encoded,
             max_new_tokens=max_new_tokens, context_size=context_size)
         decoded_text = token_ids_to_text(token_ids, tokenizer)
-        print(f"    {decoded_text.replace("\n", " ")}\n")  # Compact print format
+        decoded_text = decoded_text.replace("\n", " ")
+        print(f"    {decoded_text}")  # Compact print format
+        f.write(f"{decoded_text}\n")
 
     model.train() # ドロップアウト率を訓練設定にする。
 
@@ -357,7 +359,9 @@ def plot_losses(epochs_seen, tokens_seen, train_losses, val_losses):
     # plt.show()
 
 def plot_loss_perplexities(name, epochs_seen, tokens_seen, train_losses, val_losses):
-    fig, ax1 = plt.subplots(figsize=(5, 3))
+    fig, ax1 = plt.subplots(figsize=(10, 6))
+    plt.suptitle(f"{name}", size=12)
+    #fig.suptitle = f"Loss and Perplexity of {name}"
 
     # Plot training and validation loss against epochs
     train_perplex = [math.exp(x) for x in train_losses]
@@ -376,9 +380,8 @@ def plot_loss_perplexities(name, epochs_seen, tokens_seen, train_losses, val_los
     ax2 = ax1.twiny()  # Create a second x-axis that shares the same y-axis
     ax2.plot(tokens_seen, train_losses, alpha=0)  # Invisible plot for aligning ticks
     ax2.set_xlabel("Tokens seen")
-    fig.suptitle = f"Loss and Perplexity of {name}"
 
-    fig.tight_layout()  # Adjust layout to make room
+    #fig.tight_layout()  # Adjust layout to make room
     fig.subplots_adjust(top=0.88)
     # plt.show()
 
@@ -398,5 +401,5 @@ def create_loss_graph(conf, train_losses, tokens_seen, val_losses):
     n_epochs = conf['epochs']
     epochs_tensor = torch.linspace(1, n_epochs, len(train_losses))
     plot_loss_perplexities(conf['name'], epochs_tensor, tokens_seen, train_losses, val_losses)
-    plt.tight_layout(); plt.savefig(f"Loss_{conf['name']}.png", dpi=300)
+    plt.tight_layout(); plt.savefig(f"Loss_{conf['name']}.png")
     #plt.show()

@@ -1,5 +1,16 @@
 # 02_train.pyが読むtrain設定ファイルです。
 
+- name: Kappa_Small_gpt2_ep3_drop01
+  model: GPT2_Small
+  tokenizer: gpt2
+  train_txt: kappa.txt
+  test_txt: kappa_test.txt
+  train_val_ratio: 0.95
+  epochs: 3
+  checkpoint_count: 3
+  drop_rate: 0.1
+  saved_checkpoint: ""
+
 - name: Kappa_Small_gpt2_ep15_drop01
   model: GPT2_Small
   tokenizer: gpt2
@@ -7,6 +18,7 @@
   test_txt: kappa_test.txt
   train_val_ratio: 0.95
   epochs: 15
+  checkpoint_count: 5
   drop_rate: 0.1
   saved_checkpoint: ""
 
@@ -17,6 +29,7 @@
   test_txt: kappa_test.txt
   train_val_ratio: 0.95
   epochs: 15
+  checkpoint_count: 5
   drop_rate: 0.1
   saved_checkpoint: ""
 
@@ -27,6 +40,7 @@
   test_txt: kappa_test.txt
   train_val_ratio: 0.95
   epochs: 15
+  checkpoint_count: 5
   drop_rate: 0.0
   saved_checkpoint: ""
 
@@ -37,6 +51,7 @@
   test_txt: kappa_test.txt
   train_val_ratio: 0.95
   epochs: 50
+  checkpoint_count: 5
   drop_rate: 0.0
   saved_checkpoint: ""
 
@@ -47,6 +62,7 @@
   test_txt: kappa_test.txt
   train_val_ratio: 0.95
   epochs: 100
+  checkpoint_count: 5
   drop_rate: 0.0
   saved_checkpoint: ""
 
@@ -57,6 +73,7 @@
   test_txt: kappa_test.txt
   train_val_ratio: 0.95
   epochs: 300
+  checkpoint_count: 5
   drop_rate: 0.0
   saved_checkpoint: ""
 

@@ -35,14 +35,14 @@ def create_dir(path):
         os.makedirs(dir)
 
 
-def save_model_opt(model, optimizer, path):
+def save_model_opt(model, optimizer, conf, path):
     create_dir(path)
 
     compiled = hasattr(model, "_orig_mod")
     if compiled:
-        torch.save({ "model_state_dict": model._orig_mod.state_dict(), "optimizer_state_dict": optimizer.state_dict() }, path)
+        torch.save({ "model_state_dict": model._orig_mod.state_dict(), "optimizer_state_dict": optimizer.state_dict(), "conf": conf }, path)
     else:
-        torch.save({ "model_state_dict": model.state_dict(),           "optimizer_state_dict": optimizer.state_dict() }, path)
+        torch.save({ "model_state_dict": model.state_dict(),           "optimizer_state_dict": optimizer.state_dict(), "conf": conf }, path)
 
 
 def train_model(conf, model, train_loader, val_loader, optimizer, device,
@@ -115,7 +115,7 @@ def train_model(conf, model, train_loader, val_loader, optimizer, device,
             log_texts += log_txt + "\n"
 
     # モデルのパラメーターを保存します。
-    save_model_opt(model, optimizer, f"chkpt_{name}/ep{epoch+1}.pth")
+    save_model_opt(model, optimizer, conf, f"chkpt_{name}/ep{epoch+1}.pth")
 
     # Generate and print a sample from the model to monitor progress
     with open(f'Predicts_{name}.txt', 'w', encoding='utf-8') as f:
@@ -127,6 +127,7 @@ def train_model(conf, model, train_loader, val_loader, optimizer, device,
 
     # ログ出力.
     elapsed_time_txt = f"Elapsed time: {(time.time() - start_time):.2f} sec."
+    print(elapsed_time_txt)
     with open(f'Log_{name}.txt', 'w', encoding='utf-8') as f:
         f.write(f"{conf}\n{log_texts}{elapsed_time_txt}\n")
 

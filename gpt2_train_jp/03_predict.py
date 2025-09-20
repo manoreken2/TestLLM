@@ -12,21 +12,15 @@ torch.manual_seed(123)
 
 checkpoint_filename = "checkpoints_Small_drop01/model_ep500.pth" 
 
-tokenizer = tiktoken.get_encoding("gpt2")
-
-with open('gpt2_conf_list.yaml', 'r') as f:
+with open('gpt2_conf_list.yaml', 'r', encoding='utf-8') as f:
     gpt2_conf_list = yaml.safe_load(f)
-
-cfg = gpt2_conf_list["GPT2_Small_conf"]
-
-# 共通の設定値。
-cfg["vocab_size"] = tokenizer.n_vocab
-cfg["drop_rate"] = 0.0 # predのときはdropしない。
-cfg["qkv_bias"] = False
-cfg["context_length"] = 1024
-
-with open('gpt2_conf_list.yaml', 'r') as f:
-    gpt2_conf_list = yaml.safe_load(f)
+conf = gpt2_conf_list["GPT2_Small_conf"]
+conf["vocab_size"] = tokenizer.n_vocab
+conf["drop_rate"] = 0.0 # predのときはdropしない。
+conf.setdefault('initial_lr', 0.0001)
+conf.setdefault('peak_lr', 0.001)
+conf.setdefault('train_val_ratio', 0.9)
+conf.setdefault('saved_checkpoint', "")
 
 cfg = gpt2_conf_list["GPT2_Small_conf"]
 
@@ -35,6 +29,8 @@ cfg["vocab_size"] = tokenizer.n_vocab
 cfg["drop_rate"] = 0.0 # pred時はdropしない。
 cfg["qkv_bias"] = False
 cfg["context_length"] = 1024
+
+tokenizer = tiktoken.get_encoding("gpt2")
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("torch version:", version("torch"))

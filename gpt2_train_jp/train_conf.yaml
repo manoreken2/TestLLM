@@ -1,88 +1,147 @@
 # 02_train.pyが読むtrain設定ファイルです。
 
-- name: Kappa_Small_gpt2_ep3_drop01
-  model: GPT2_Small
-  tokenizer: gpt2
-  train_txt: kappa.txt
-  test_txt: kappa_test.txt
-  train_val_ratio: 0.95
-  epochs: 3
-  checkpoint_count: 3
-  drop_rate: 0.1
-  saved_checkpoint: ""
-
-- name: Kappa_Small_gpt2_ep15_drop01
-  model: GPT2_Small
-  tokenizer: gpt2
-  train_txt: kappa.txt
-  test_txt: kappa_test.txt
-  train_val_ratio: 0.95
-  epochs: 15
-  checkpoint_count: 5
-  drop_rate: 0.1
-  saved_checkpoint: ""
-
-- name: Kappa_Small_o200k_ep15_drop01
+- name: Kappa_Small_o200k_ep50_drop0
   model: GPT2_Small
   tokenizer: o200k_base
   train_txt: kappa.txt
   test_txt: kappa_test.txt
-  train_val_ratio: 0.95
-  epochs: 15
-  checkpoint_count: 5
-  drop_rate: 0.1
-  saved_checkpoint: ""
-
-- name: Kappa_Small_o200k_ep15_drop00
-  model: GPT2_Small
-  tokenizer: o200k_base
-  train_txt: kappa.txt
-  test_txt: kappa_test.txt
-  train_val_ratio: 0.95
-  epochs: 15
-  checkpoint_count: 5
-  drop_rate: 0.0
-  saved_checkpoint: ""
-
-- name: Kappa_Small_o200k_ep50_drop00
-  model: GPT2_Small
-  tokenizer: o200k_base
-  train_txt: kappa.txt
-  test_txt: kappa_test.txt
-  train_val_ratio: 0.95
   epochs: 50
-  checkpoint_count: 5
+  checkpoint_count: 10
   drop_rate: 0.0
-  saved_checkpoint: ""
+  initial_lr: 0.0001
+  peak_lr: 0.001
 
-- name: Kappa_Medium_o200k_ep100_drop00_min01
-  model: GPT2_Medium
-  tokenizer: o200k_base
-  train_txt: kappa.txt
-  test_txt: kappa_test.txt
-  train_val_ratio: 0.95
-  epochs: 100
-  checkpoint_count: 5
-  drop_rate: 0.0
-  saved_checkpoint: ""
+#- name: Kappa_Small_gpt2_ep15_drop01
+#  model: GPT2_Small
+#  tokenizer: gpt2
+#  train_txt: kappa.txt
+#  test_txt: kappa_test.txt
+#  train_val_ratio: 0.95
+#  epochs: 15
+#  checkpoint_count: 5
+#  drop_rate: 0.1
 
-- name: Kappa_Medium_o200k_ep300_drop00_min01
-  model: GPT2_Medium
-  tokenizer: o200k_base
-  train_txt: kappa.txt
-  test_txt: kappa_test.txt
-  train_val_ratio: 0.95
-  epochs: 300
-  checkpoint_count: 5
-  drop_rate: 0.0
-  saved_checkpoint: ""
-
-#- name: Kappa_Large_o200k_ep50_drop00
-#  model: GPT2_Large
+#- name: Kappa_Small_o200k_ep15_drop01
+#  model: GPT2_Small
 #  tokenizer: o200k_base
 #  train_txt: kappa.txt
 #  test_txt: kappa_test.txt
 #  train_val_ratio: 0.95
-#  epochs: 50
-#  drop_rate: 0.0
-#  saved_checkpoint: ""
+#  epochs: 15
+#  checkpoint_count: 5
+#  drop_rate: 0.1
+
+# - name: Kappa_Small_o200k_ep60_drop01_minlr10x
+#   model: GPT2_Small
+#   tokenizer: o200k_base
+#   train_txt: kappa.txt
+#   test_txt: kappa_test.txt
+#   train_val_ratio: 0.95
+#   epochs: 60
+#   checkpoint_count: 5
+#   drop_rate: 0.1
+#   initial_lr: 0.0001
+#   peak_lr: 0.001
+
+# - name: Kappa_Small_o200k_ep60_drop00
+#   model: GPT2_Small
+#   tokenizer: o200k_base
+#   train_txt: kappa.txt
+#   test_txt: kappa_test.txt
+#   train_val_ratio: 0.95
+#   epochs: 60
+#   checkpoint_count: 5
+#   drop_rate: 0.0
+#   initial_lr: 0.0001
+#   peak_lr: 0.001
+
+# - name: Kappa_Medium_o200k_ep60_drop00
+#   model: GPT2_Medium
+#   tokenizer: o200k_base
+#   train_txt: kappa.txt
+#   test_txt: kappa_test.txt
+#   train_val_ratio: 0.95
+#   epochs: 60
+#   checkpoint_count: 5
+#   drop_rate: 0.0
+#   saved_checkpoint: ""
+#   initial_lr: 0.0001
+#   peak_lr: 0.001
+
+# - name: Kappa_Large_o200k_ep15_drop00_lr3em5
+#   model: GPT2_Large
+#   tokenizer: o200k_base
+#   train_txt: kappa.txt
+#   test_txt: kappa_test.txt
+#   train_val_ratio: 0.95
+#   epochs: 15
+#   checkpoint_count: 5
+#   drop_rate: 0.0
+#   saved_checkpoint: ""
+#   initial_lr: 0.00003
+#   peak_lr: 0.0003
+
+# - name: Kappa_Large_o200k_ep50_drop00_lr3em5
+#   model: GPT2_Large
+#   tokenizer: o200k_base
+#   train_txt: kappa.txt
+#   test_txt: kappa_test.txt
+#   train_val_ratio: 0.95
+#   epochs: 50
+#   checkpoint_count: 5
+#   drop_rate: 0.0
+#   saved_checkpoint: ""
+#   initial_lr: 0.00003
+#   peak_lr: 0.0003
+
+# - name: Kappa_Large_o200k_ep150_drop00_lr3em5
+#   model: GPT2_Large
+#   tokenizer: o200k_base
+#   train_txt: kappa.txt
+#   test_txt: kappa_test.txt
+#   train_val_ratio: 0.95
+#   epochs: 150
+#   checkpoint_count: 5
+#   drop_rate: 0.0
+#   saved_checkpoint: ""
+#   initial_lr: 0.00003
+#   peak_lr: 0.0003
+
+# - name: Akutagawa_Large_o200k_ep50_drop00_lr3em5
+#   model: GPT2_Large
+#   tokenizer: o200k_base
+#   train_txt: Akutagawa.txt
+#   test_txt: kappa_test.txt
+#   train_val_ratio: 0.95
+#   epochs: 50
+#   checkpoint_count: 5
+#   drop_rate: 0.0
+#   saved_checkpoint: ""
+#   initial_lr: 0.00003
+#   peak_lr: 0.0003
+
+# - name: Akutagawa_Large_o200k_ep150_drop00_lr3em5
+#   model: GPT2_Large
+#   tokenizer: o200k_base
+#   train_txt: Akutagawa.txt
+#   test_txt: kappa_test.txt
+#   train_val_ratio: 0.95
+#   epochs: 150
+#   checkpoint_count: 15
+#   drop_rate: 0.0
+#   saved_checkpoint: ""
+#   initial_lr: 0.00003
+#   peak_lr: 0.0003
+
+- name: Akutagawa_Large_o200k_ep50_drop01_lr1em5
+  model: GPT2_Large
+  tokenizer: o200k_base
+  train_txt: Akutagawa.txt
+  test_txt: kappa_test.txt
+  train_val_ratio: 0.95
+  epochs: 50
+  checkpoint_count: 5
+  drop_rate: 0.1
+  saved_checkpoint: ""
+  initial_lr: 0.00001
+  peak_lr: 0.0001

@@ -31,9 +31,9 @@ def Train(device, conf):
     assert(0 == (n_epochs % checkpoint_epoch_interval))
 
     # learning rate config
-    initial_lr = 0.0001
-    peak_lr = 0.001  # this was originally set to 5e-4 in the book by mistake
-    min_lr = 0.1 * initial_lr
+    initial_lr = conf['initial_lr'] # 0.0001
+    peak_lr = conf['peak_lr'] # 0.001  # this was originally set to 5e-4 in the book by mistake
+    min_lr = initial_lr #0.1 * initial_lr
     weight_decay = 0.1
 
     # "gpt2", "o200k_base"等。
@@ -44,10 +44,10 @@ def Train(device, conf):
         gpt2_conf_list = yaml.safe_load(f)
     gpt2_conf = gpt2_conf_list[ conf['model'] ]
     # 共通の設定値。
-    gpt2_conf["vocab_size"] = tokenizer.n_vocab
-    gpt2_conf["drop_rate"] = conf['drop_rate']
-    gpt2_conf["qkv_bias"] = False
-    gpt2_conf["context_length"] = 1024
+    gpt2_conf.setdefault("vocab_size", tokenizer.n_vocab)
+    gpt2_conf.setdefault("drop_rate", conf['drop_rate'])
+    gpt2_conf.setdefault("qkv_bias", False)
+    gpt2_conf.setdefault("context_length", 1024)
 
     split_idx = int(conf['train_val_ratio'] * len(text_data))
 
@@ -90,6 +90,19 @@ def Train(device, conf):
     del val_loader
     del text_data
 
+def load_train_conf():
+    with open('train_conf.yaml', 'r', encoding='utf-8') as f:
+        train_conf = yaml.safe_load(f)
+
+    for conf in train_conf:
+        conf.setdefault('initial_lr', 0.0001)
+        conf.setdefault('peak_lr', 0.001)
+        conf.setdefault('drop_rate', 0.1)
+        conf.setdefault('train_val_ratio', 0.9)
+        conf.setdefault('saved_checkpoint', "")
+
+    return train_conf
+
 def main():
 
     # Setup torch device
@@ -107,11 +120,9 @@ def main():
     print("")
 
     # Train loop
-    with open('train_conf.yaml', 'r', encoding='utf-8') as f:
-        train_conf = yaml.safe_load(f)
+    train_conf = load_train_conf()
 
     for conf in train_conf:
-        start_time = time.time()
         torch.cuda.empty_cache()
         torch.manual_seed(123)
 
@@ -120,8 +131,6 @@ def main():
         gc.collect()
         with torch.no_grad():
             torch.cuda.empty_cache()
-
-        print(f"Completed in {(time.time() - start_time):.2f} sec.")
 
 if __name__ == "__main__":
     main()

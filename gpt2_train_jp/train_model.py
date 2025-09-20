@@ -1,3 +1,4 @@
+import time
 import math
 from helpers import evaluate_model, generate_and_print_sample
 from helpers import calc_loss_batch
@@ -49,6 +50,8 @@ def train_model(conf, model, train_loader, val_loader, optimizer, device,
                 warmup_steps, initial_lr, min_lr, checkpoint_epoch_interval, test_output_tokens=100):
     name=conf['name']
 
+    start_time = time.time()
+
     train_losses, val_losses, track_tokens_seen, track_lrs = [], [], [], []
     tokens_seen, global_step = 0, -1
 
@@ -60,6 +63,8 @@ def train_model(conf, model, train_loader, val_loader, optimizer, device,
 
     # Calculate the learning rate increment during the warmup phase
     lr_increment = (peak_lr - initial_lr) / warmup_steps
+
+    log_texts = ""
 
     for epoch in range(n_epochs):
         model.train()
@@ -103,10 +108,11 @@ def train_model(conf, model, train_loader, val_loader, optimizer, device,
             train_losses.append(train_loss)
             val_losses.append(val_loss)
             track_tokens_seen.append(tokens_seen)
+
             # Print the current losses
-            print(f"{name} Ep {epoch+1} (Iter {global_step:06d}) lr={lr:.3e}: "
-                    f"Train loss {train_loss:.3e}, perp={math.exp(train_loss):.3f}, "
-                    f"Val loss {val_loss:.3f}, perp={math.exp(val_loss):.1f}")
+            log_txt = f"{name} Ep {epoch+1} (Iter {global_step:06d}) lr={lr:.3e}: Train loss {train_loss:.3e}, perp={math.exp(train_loss):.3f}, Val loss {val_loss:.3f}, perp={math.exp(val_loss):.1f}"
+            print(log_txt)
+            log_texts += log_txt + "\n"
 
     # モデルのパラメーターを保存します。
     save_model_opt(model, optimizer, f"chkpt_{name}/ep{epoch+1}.pth")
@@ -118,5 +124,12 @@ def train_model(conf, model, train_loader, val_loader, optimizer, device,
 
     # 過学習かどうかを判断するためのグラフ。
     create_loss_graph(conf, train_losses, track_tokens_seen, val_losses)
+
+    # ログ出力.
+    elapsed_time_txt = f"Elapsed time: {(time.time() - start_time):.2f} sec."
+    with open(f'Log_{name}.txt', 'w', encoding='utf-8') as f:
+        f.write(log_texts + elapsed_time_txt + "\n")
+
+
 
 

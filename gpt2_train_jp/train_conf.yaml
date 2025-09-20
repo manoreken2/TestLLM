@@ -1,0 +1,49 @@
+- name: Kappa_EP1_Small_o200k_ep15_drop01
+  model: GPT2_Small
+  tokenizer: o200k_base
+  train_txt: kappa.txt
+  test_txt: kappa_test.txt
+  train_val_ratio: 0.95
+  epochs: 1
+  drop_rate: 0.1
+  saved_checkpoint: ""
+
+- name: Kappa_EP1_Small_gpt2_ep15_drop01
+  model: GPT2_Small
+  tokenizer: gpt2
+  train_txt: kappa.txt
+  test_txt: kappa_test.txt
+  train_val_ratio: 0.95
+  epochs: 1
+  drop_rate: 0.1
+  saved_checkpoint: ""
+
+- name: Kappa_Small_gpt2_ep15_drop01
+  model: GPT2_Small
+  tokenizer: gpt2
+  train_txt: kappa.txt
+  test_txt: kappa_test.txt
+  train_val_ratio: 0.95
+  epochs: 15
+  drop_rate: 0.1
+  saved_checkpoint: ""
+
+- name: Kappa_Small_o200k_ep15_drop01
+  model: GPT2_Small
+  tokenizer: o200k_base
+  train_txt: kappa.txt
+  test_txt: kappa_test.txt
+  train_val_ratio: 0.95
+  epochs: 15
+  drop_rate: 0.1
+  saved_checkpoint: ""
+
+- name: Kappa_Small_o200k_ep15_drop00
+  model: GPT2_Small
+  tokenizer: o200k_base
+  train_txt: kappa.txt
+  test_txt: kappa_test.txt
+  train_val_ratio: 0.95
+  epochs: 15
+  drop_rate: 0.0
+  saved_checkpoint: ""

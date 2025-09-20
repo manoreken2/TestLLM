@@ -1,0 +1,24 @@
+GPT2_Small:
+    emb_dim: 768
+    n_heads: 12
+    n_layers: 12
+    batch_sz: 4 # 18
+
+GPT2_Medium:
+    emb_dim: 1024
+    n_heads: 16
+    n_layers: 24
+    batch_sz: 3
+
+GPT2_Large:
+    emb_dim: 1280
+    n_heads: 20
+    n_layers: 36
+    batch_sz: 1
+
+GPT2_XL:
+    emb_dim: 1600
+    n_heads: 25
+    n_layers: 48
+    batch_sz: 1
+

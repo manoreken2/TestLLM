@@ -7,19 +7,21 @@ import os
 
 
 def new_model(device, config, peak_lr, weight_decay):
-    model = GPTModelFast(config).bfloat16()
-    #model = GPTModel(config).bfloat16()
-    model.to(device)
-    optimizer = torch.optim.AdamW(model.parameters(), lr=peak_lr, weight_decay=weight_decay)  # the book accidentally omitted the lr assignment
+    model = GPTModelFast(config)
+    #model = GPTModel(config)
+    model = torch.compile(model)
+    model.to(device).to(torch.bfloat16)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=peak_lr, weight_decay=weight_decay, fused=True)
     return model, optimizer
 
-def load_model(device, config, path):
+def load_model(device, config, path, peak_lr, weight_decay):
     checkpoint = torch.load(path, weights_only=True)
-    model = GPTModelFast(config).bfloat16()
-    #model = GPTModel(config).bfloat16()
+    model = GPTModelFast(config)
+    #model = GPTModel(config)
     model.load_state_dict(checkpoint["model_state_dict"])
-    model.to(device)
-    optimizer = torch.optim.AdamW(model.parameters(), lr=0.0005, weight_decay=0.1)
+    model = torch.compile(model)
+    model.to(device).to(torch.bfloat16)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=peak_lr, weight_decay=weight_decay, fused=True)
     optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
     return model, optimizer
 
@@ -31,12 +33,11 @@ def create_dir(path):
 def save_model_opt(model, optimizer, path):
     create_dir(path)
 
-    torch.save({
-        "model_state_dict": model.state_dict(),
-        "optimizer_state_dict": optimizer.state_dict(),
-        }, 
-        path)
-
+    compiled = hasattr(model, "_orig_mod")
+    if compiled:
+        torch.save({ "model_state_dict": model._orig_mod.state_dict(), "optimizer_state_dict": optimizer.state_dict() }, path)
+    else:
+        torch.save({ "model_state_dict": model.state_dict(),           "optimizer_state_dict": optimizer.state_dict() }, path)
 
 def train_model(name, model, train_loader, val_loader, optimizer, device,
                 n_epochs, eval_iter, test_txt_list, tokenizer,

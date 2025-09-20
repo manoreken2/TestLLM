@@ -45,7 +45,7 @@ def create_dataloader_v1(txt, tokenizer, cfg, shuffle=True, drop_last=True, num_
                               cfg['context_length'] // 2 )
 
     dataloader = DataLoader(
-        dataset, batch_size=cfg['batch_sz'], shuffle=shuffle, drop_last=drop_last, num_workers=num_workers)
+        dataset, batch_size=cfg['batch_sz'], shuffle=shuffle, drop_last=drop_last, num_workers=num_workers,pin_memory=True)
 
     return dataloader
 

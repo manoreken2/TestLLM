@@ -77,7 +77,7 @@ def Train(device, conf):
     if len(checkpoint_filename) == 0:
         model, optimizer = new_model(device, gpt2_conf, peak_lr, weight_decay)
     else:
-        model, optimizer = load_model(device, gpt2_conf, checkpoint_filename)
+        model, optimizer = load_model(device, gpt2_conf, checkpoint_filename, peak_lr, weight_decay)
 
     train_losses, val_losses, tokens_seen, lrs = train_model(
         conf['name'],
@@ -98,11 +98,23 @@ def Train(device, conf):
 
 def main():
 
+    # Setup torch device
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"PyTorch version {version("torch")}. Using {device} device. ", end='')
+    if torch.cuda.is_available():
+        print(f"CUDA version: {torch.version.cuda}. ", end='')
+
+        capability = torch.cuda.get_device_capability()
+        if capability[0] >= 7:  # Volta (7.0+), Turing (7.5+), Ampere (8.0+), Hopper (9.0+)
+            torch.set_float32_matmul_precision("high")
+            print("Uses tensor cores. ", end='')
+        else:
+            print("Tensor cores not supported on this GPU. Using default precision. ", end='')
+    print("")
+
+    # Train loop
     with open('train_conf.yaml', 'r', encoding='utf-8') as f:
         train_conf = yaml.safe_load(f)
-
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"PyTorch version {version("torch")}. Using {device} device")
 
     for conf in train_conf:
         start_time = time.time()

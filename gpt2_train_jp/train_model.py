@@ -128,7 +128,7 @@ def train_model(conf, model, train_loader, val_loader, optimizer, device,
     # ログ出力.
     elapsed_time_txt = f"Elapsed time: {(time.time() - start_time):.2f} sec."
     with open(f'Log_{name}.txt', 'w', encoding='utf-8') as f:
-        f.write(log_texts + elapsed_time_txt + "\n")
+        f.write(f"{conf}\n{log_texts}{elapsed_time_txt}\n")
 
 
 

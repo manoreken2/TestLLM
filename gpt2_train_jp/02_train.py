@@ -10,7 +10,6 @@ from previous_chapters import plot_loss_perplexities
 from train_model import load_model
 from train_model import new_model
 from train_model import train_model
-from utf32_tokenizer import Utf32Tokenizer
 import yaml
 
 # 過学習かどうかを判断するためのグラフ。
@@ -36,7 +35,7 @@ def Train(device, conf):
         test_txt_list = [line.rstrip() for line in file]
 
     n_epochs = conf['epochs'] # 15
-    checkpoint_count = 1
+    checkpoint_count = 5 # 5
     checkpoint_epoch_interval = int(n_epochs / checkpoint_count)
     assert(0 == (n_epochs % checkpoint_epoch_interval))
 
@@ -46,7 +45,7 @@ def Train(device, conf):
     min_lr = initial_lr # 0.1 * initial_lr
     weight_decay = 0.1
 
-
+    # "gpt2", "o200k_base"等。
     tokenizer = tiktoken.get_encoding(conf['tokenizer'])
 
     # https://storage.prod.researchhub.com/uploads/papers/2020/06/01/language-models.pdf
@@ -105,28 +104,25 @@ def Train(device, conf):
     del text_data
 
 def main():
-    start_time = time.time()
 
-    with open('train_conf.yaml', 'r') as f:
+    with open('train_conf.yaml', 'r', encoding='utf-8') as f:
         train_conf = yaml.safe_load(f)
 
-    torch.cuda.empty_cache()
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"PyTorch version {version("torch")}. Using {device} device")
 
     for conf in train_conf:
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        print("torch version:", version("torch"))
-        print(f"Using {device} device.")
+        start_time = time.time()
+        torch.cuda.empty_cache()
         torch.manual_seed(123)
 
         Train(device, conf)
 
-        device = None
         gc.collect()
         with torch.no_grad():
             torch.cuda.empty_cache()
 
-    end_time = time.time()
-    print(f"Completed in {(end_time - start_time):.2f} sec.")
+        print(f"Completed in {(time.time() - start_time):.2f} sec.")
 
 if __name__ == "__main__":
     main()

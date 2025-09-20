@@ -102,7 +102,8 @@ def train_model(name, model, train_loader, val_loader, optimizer, device,
                     f"Train loss {train_loss:.3e}, perp={math.exp(train_loss):.3f}, "
                     f"Val loss {val_loss:.3f}, perp={math.exp(val_loss):.1f}")
 
-            save_model_opt(model, optimizer, f"chkpt_{name}/ep{epoch+1}.pth")
+    # モデルのパラメーターを保存します。
+    save_model_opt(model, optimizer, f"chkpt_{name}/ep{epoch+1}.pth")
 
     # Generate and print a sample from the model to monitor progress
     for test_txt in test_txt_list:

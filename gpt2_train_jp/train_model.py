@@ -1,6 +1,7 @@
 import math
-from previous_chapters import evaluate_model, generate_and_print_sample
-from previous_chapters import calc_loss_batch
+from helpers import evaluate_model, generate_and_print_sample
+from helpers import calc_loss_batch
+from helpers import create_loss_graph
 from gpt_model_fast import GPTModelFast
 import torch
 import os
@@ -14,6 +15,7 @@ def new_model(device, config, peak_lr, weight_decay):
     optimizer = torch.optim.AdamW(model.parameters(), lr=peak_lr, weight_decay=weight_decay, fused=True)
     return model, optimizer
 
+
 def load_model(device, config, path, peak_lr, weight_decay):
     checkpoint = torch.load(path, weights_only=True)
     model = GPTModelFast(config)
@@ -25,10 +27,12 @@ def load_model(device, config, path, peak_lr, weight_decay):
     optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
     return model, optimizer
 
+
 def create_dir(path):
     dir = os.path.dirname(path)
     if 0 < len(dir) and not os.path.exists(dir):
         os.makedirs(dir)
+
 
 def save_model_opt(model, optimizer, path):
     create_dir(path)
@@ -39,9 +43,11 @@ def save_model_opt(model, optimizer, path):
     else:
         torch.save({ "model_state_dict": model.state_dict(),           "optimizer_state_dict": optimizer.state_dict() }, path)
 
-def train_model(name, model, train_loader, val_loader, optimizer, device,
+
+def train_model(conf, model, train_loader, val_loader, optimizer, device,
                 n_epochs, eval_iter, test_txt_list, tokenizer,
                 warmup_steps, initial_lr, min_lr, checkpoint_epoch_interval, test_output_tokens=100):
+    name=conf['name']
 
     train_losses, val_losses, track_tokens_seen, track_lrs = [], [], [], []
     tokens_seen, global_step = 0, -1
@@ -110,5 +116,7 @@ def train_model(name, model, train_loader, val_loader, optimizer, device,
         for test_txt in test_txt_list:
             generate_and_print_sample(f, model, tokenizer, device, test_txt, test_output_tokens)
 
-    return train_losses, val_losses, track_tokens_seen, track_lrs
+    # 過学習かどうかを判断するためのグラフ。
+    create_loss_graph(conf, train_losses, track_tokens_seen, val_losses)
+
 

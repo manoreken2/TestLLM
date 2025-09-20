@@ -8,6 +8,19 @@ Original book sourcecode: https://github.com/rasbt/LLMs-from-scratch
 
 Tested on x64 PC, Ubuntu Linux 24.04.3, NVIDIA RTX 5090
 
+```bash
+sudo apt update
+sudo apt upgrade
+sudo apt install -y nvidia-driver-580-open
+sudo reboot
+```
+
+On the next boot, check the gpu is recognized correctly
+
+```bash
+nvidia-smi
+```
+
 Install MiniForge https://github.com/conda-forge/miniforge
 
 Create conda environment for gpt2_train_jp
@@ -26,6 +39,8 @@ pip install -r requirements.txt
 ```
 
 ## Prepare dataset
+
+Download text files from Aozora bunko https://www.aozora.gr.jp/
 
 Converts Aozora bunko text to UTF-8
 

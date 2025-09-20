@@ -1,11 +1,8 @@
-# Copyright (c) Sebastian Raschka under Apache License 2.0 (see LICENSE.txt).
-# Source for "Build a Large Language Model From Scratch"
-#   - https://www.manning.com/books/build-a-large-language-model-from-scratch
-# Code: https://github.com/rasbt/LLMs-from-scratch
-
-# This file collects all the relevant code that we covered thus far
-# throughout Chapters 2-4.
-# This file can be run as a standalone script.
+# Original copyright
+#   Copyright (c) Sebastian Raschka under Apache License 2.0 (see LICENSE.txt).
+#   Source for "Build a Large Language Model From Scratch"
+#     - https://www.manning.com/books/build-a-large-language-model-from-scratch
+#   Code: https://github.com/rasbt/LLMs-from-scratch
 
 import torch
 import torch.nn as nn
@@ -401,5 +398,5 @@ def create_loss_graph(conf, train_losses, tokens_seen, val_losses):
     n_epochs = conf['epochs']
     epochs_tensor = torch.linspace(1, n_epochs, len(train_losses))
     plot_loss_perplexities(conf['name'], epochs_tensor, tokens_seen, train_losses, val_losses)
-    plt.tight_layout(); plt.savefig(f"Loss_{conf['name']}.png")
+    plt.tight_layout(); plt.savefig(f"Loss_{conf['name']}.png", dpi=200)
     #plt.show()

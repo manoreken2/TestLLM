@@ -2,10 +2,8 @@ import gc
 import torch
 import tiktoken
 import time
-import matplotlib.pyplot as plt
 from importlib.metadata import version
-from previous_chapters import create_dataloader_v1
-from previous_chapters import create_loss_graph
+from helpers import create_dataloader_v1
 from train_model import load_model
 from train_model import new_model
 from train_model import train_model
@@ -79,15 +77,11 @@ def Train(device, conf):
     else:
         model, optimizer = load_model(device, gpt2_conf, checkpoint_filename, peak_lr, weight_decay)
 
-    train_losses, val_losses, tokens_seen, lrs = train_model(
-        conf['name'],
-        model, train_loader, val_loader, optimizer, device, n_epochs=n_epochs,
+    train_model(
+        conf, model, train_loader, val_loader, optimizer, device, n_epochs=n_epochs,
         eval_iter=1, test_txt_list=test_txt_list,
         tokenizer=tokenizer, warmup_steps=warmup_steps, 
         initial_lr=initial_lr, min_lr=min_lr, checkpoint_epoch_interval=checkpoint_epoch_interval)
-
-    # 過学習かどうかを判断するためのグラフ。
-    create_loss_graph(conf, train_losses, tokens_seen, val_losses)
 
     del model
     del optimizer

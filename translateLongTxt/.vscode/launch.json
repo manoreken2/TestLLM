@@ -11,7 +11,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": [ "--input=test/Edith_Wharton_The_verdict.txt", "--tgt_lang=`Modern Japanese`", "--output=Edith_Wharton_The_verdict_JP_32b.html",  "--model_name=DeepSeek-R1:32b" ]
+            "args": [ "--input=test/inferno_SV.txt", "--tgt_lang=`Modern Japanese`", "--output=Strindberg_Inferno_JP_GptOss_120b.html",  "--model_name=gpt-oss:120b" ]
         }
     ]
 }

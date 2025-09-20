@@ -1,14 +1,13 @@
 import math
 from previous_chapters import evaluate_model, generate_and_print_sample
 from previous_chapters import calc_loss_batch
-from previous_chapters import GPTModel
 from gpt_model_fast import GPTModelFast
 import torch
 import os
 
 
 def new_model(device, config, peak_lr, weight_decay):
-    model = GPTModelFast(config)
+    model = GPTModelFast(config).bfloat16()
     #model = GPTModel(config).bfloat16()
     model.to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=peak_lr, weight_decay=weight_decay)  # the book accidentally omitted the lr assignment
@@ -16,7 +15,7 @@ def new_model(device, config, peak_lr, weight_decay):
 
 def load_model(device, config, path):
     checkpoint = torch.load(path, weights_only=True)
-    model = GPTModelFast(config)
+    model = GPTModelFast(config).bfloat16()
     #model = GPTModel(config).bfloat16()
     model.load_state_dict(checkpoint["model_state_dict"])
     model.to(device)

@@ -1,46 +1,46 @@
 # 02_train.pyが読むtrain設定ファイルです。
 
-#- name: Kappa_Small_o200k_ep15_drop01
-#  model: GPT2_Small
-#  tokenizer: o200k_base
-#  train_txt: kappa.txt
-#  test_txt: kappa_test.txt
-#  train_val_ratio: 0.95
-#  epochs: 15
-#  drop_rate: 0.1
-#  saved_checkpoint: ""
+- name: Kappa_Small_gpt2_ep15_drop01
+  model: GPT2_Small
+  tokenizer: gpt2
+  train_txt: kappa.txt
+  test_txt: kappa_test.txt
+  train_val_ratio: 0.95
+  epochs: 15
+  drop_rate: 0.1
+  saved_checkpoint: ""
 
-#- name: Kappa_Small_gpt2_ep15_drop01
-#  model: GPT2_Small
-#  tokenizer: gpt2
-#  train_txt: kappa.txt
-#  test_txt: kappa_test.txt
-#  train_val_ratio: 0.95
-#  epochs: 15
-#  drop_rate: 0.1
-#  saved_checkpoint: ""
+- name: Kappa_Small_o200k_ep15_drop01
+  model: GPT2_Small
+  tokenizer: o200k_base
+  train_txt: kappa.txt
+  test_txt: kappa_test.txt
+  train_val_ratio: 0.95
+  epochs: 15
+  drop_rate: 0.1
+  saved_checkpoint: ""
 
-#- name: Kappa_Small_o200k_ep15_drop00
-#  model: GPT2_Small
-#  tokenizer: o200k_base
-#  train_txt: kappa.txt
-#  test_txt: kappa_test.txt
-#  train_val_ratio: 0.95
-#  epochs: 15
-#  drop_rate: 0.0
-#  saved_checkpoint: ""
+- name: Kappa_Small_o200k_ep15_drop00
+  model: GPT2_Small
+  tokenizer: o200k_base
+  train_txt: kappa.txt
+  test_txt: kappa_test.txt
+  train_val_ratio: 0.95
+  epochs: 15
+  drop_rate: 0.0
+  saved_checkpoint: ""
 
-#- name: Kappa_Small_o200k_ep50_drop00
-#  model: GPT2_Small
-#  tokenizer: o200k_base
-#  train_txt: kappa.txt
-#  test_txt: kappa_test.txt
-#  train_val_ratio: 0.95
-#  epochs: 50
-#  drop_rate: 0.0
-#  saved_checkpoint: ""
+- name: Kappa_Small_o200k_ep50_drop00
+  model: GPT2_Small
+  tokenizer: o200k_base
+  train_txt: kappa.txt
+  test_txt: kappa_test.txt
+  train_val_ratio: 0.95
+  epochs: 50
+  drop_rate: 0.0
+  saved_checkpoint: ""
 
-- name: Kappa_Medium_o200k_ep100_drop00
+- name: Kappa_Medium_o200k_ep100_drop00_min01
   model: GPT2_Medium
   tokenizer: o200k_base
   train_txt: kappa.txt
@@ -50,7 +50,7 @@
   drop_rate: 0.0
   saved_checkpoint: ""
 
-- name: Kappa_Medium_o200k_ep300_drop00
+- name: Kappa_Medium_o200k_ep300_drop00_min01
   model: GPT2_Medium
   tokenizer: o200k_base
   train_txt: kappa.txt

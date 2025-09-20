@@ -5,20 +5,13 @@ import time
 import matplotlib.pyplot as plt
 from importlib.metadata import version
 from previous_chapters import create_dataloader_v1
-from previous_chapters import GPTModel
-from previous_chapters import plot_loss_perplexities
+from previous_chapters import create_loss_graph
 from train_model import load_model
 from train_model import new_model
 from train_model import train_model
 import yaml
 
-# 過学習かどうかを判断するためのグラフ。
-def CreateGraphs(conf, train_losses, tokens_seen, val_losses):
-    n_epochs = conf['epochs']
-    epochs_tensor = torch.linspace(1, n_epochs, len(train_losses))
-    plot_loss_perplexities(conf['name'], epochs_tensor, tokens_seen, train_losses, val_losses)
-    plt.tight_layout(); plt.savefig(f"Loss_{conf['name']}.pdf")
-    #plt.show()
+
 
 def Train(device, conf):
     print(conf)
@@ -42,7 +35,7 @@ def Train(device, conf):
     # learning rate config
     initial_lr = 0.0001
     peak_lr = 0.001  # this was originally set to 5e-4 in the book by mistake
-    min_lr = initial_lr # 0.1 * initial_lr
+    min_lr = 0.1 * initial_lr
     weight_decay = 0.1
 
     # "gpt2", "o200k_base"等。
@@ -94,7 +87,7 @@ def Train(device, conf):
         initial_lr=initial_lr, min_lr=min_lr, checkpoint_epoch_interval=checkpoint_epoch_interval)
 
     # 過学習かどうかを判断するためのグラフ。
-    CreateGraphs(conf, train_losses, tokens_seen, val_losses)
+    create_loss_graph(conf, train_losses, tokens_seen, val_losses)
 
     del model
     del optimizer

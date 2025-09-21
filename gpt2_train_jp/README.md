@@ -72,8 +72,7 @@ python 02_train.py
 Run 03_predict.py to predict text
 
 ```bash
-python 03_predict.py --input_str "僕は"
-
+$ python 03_predict.py --input_str "僕は"
 PyTorch version 2.8.0+cu129. Using cuda device. CUDA version: 12.9. high matmul precision. 
     僕は人並みにリュック・サックを背負い、あの上高地の温泉宿から穂高山へ登ろうとしました。穂高山へ登るのには御承知のとおり梓川をさかのぼるほかはありません。僕は前に穂高山はもちろん、槍ヶ岳にも登っていましたから、朝霧の下りた梓川の谷を案
 Pred completed in 28.69 sec.

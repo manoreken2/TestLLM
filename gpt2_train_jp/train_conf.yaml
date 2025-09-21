@@ -11,7 +11,7 @@
 #   initial_lr: 0.0001
 #   peak_lr: 0.001
 
-- name: Akuragawa_Small_o200k_ep50_drop0
+- name: Akutagawa_Small_o200k_ep50_drop0
   model: GPT2_Small
   tokenizer: o200k_base
   train_txt: Akutagawa.txt
@@ -22,7 +22,7 @@
   initial_lr: 0.0001
   peak_lr: 0.001
 
-- name: Akuragawa_Small_o200k_ep50_drop01
+- name: Akutagawa_Small_o200k_ep50_drop01
   model: GPT2_Small
   tokenizer: o200k_base
   train_txt: Akutagawa.txt

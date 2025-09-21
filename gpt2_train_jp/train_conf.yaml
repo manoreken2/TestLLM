@@ -22,16 +22,16 @@
 #  initial_lr: 0.0001
 #  peak_lr: 0.001
 
-# - name: Akutagawa_Small_o200k_ep50_drop01
-#   model: GPT2_Small
-#   tokenizer: o200k_base
-#   train_txt: Akutagawa.txt
-#   test_txt: Akutagawa_test.txt
-#   epochs: 50
-#   checkpoint_count: 10
-#   drop_rate: 0.1
-#   initial_lr: 0.0001
-#   peak_lr: 0.001
+- name: Akutagawa_Small_o200k_ep50_drop01
+  model: GPT2_Small
+  tokenizer: o200k_base
+  train_txt: Akutagawa.txt
+  test_txt: Akutagawa_test.txt
+  epochs: 50
+  checkpoint_count: 10
+  drop_rate: 0.1
+  initial_lr: 0.0001
+  peak_lr: 0.001
 
 #- name: Kappa_Small_gpt2_ep15_drop01
 #  model: GPT2_Small
@@ -142,6 +142,7 @@
 #   initial_lr: 0.00003
 #   peak_lr: 0.0003
 
+# dame
 # - name: Akutagawa_Large_o200k_ep150_drop00_lr3em5
 #   model: GPT2_Large
 #   tokenizer: o200k_base
@@ -155,15 +156,42 @@
 #   initial_lr: 0.00003
 #   peak_lr: 0.0003
 
-- name: Akutagawa_Large_o200k_ep50_drop01_lr1em5
-  model: GPT2_Large
+# - name: Akutagawa_Medium_o200k_ep50_drop01_lr1e4
+#   model: GPT2_Medium
+#   tokenizer: o200k_base
+#   train_txt: Akutagawa.txt
+#   test_txt: Akutagawa_test.txt
+#   train_val_ratio: 0.95
+#   epochs: 50
+#   checkpoint_count: 10
+#   drop_rate: 0.1
+#   saved_checkpoint: ""
+#   initial_lr: 0.00001
+#   peak_lr: 0.0001
+
+- name: Akutagawa_Medium_o200k_ep50_drop01_lr3e4
+  model: GPT2_Medium
   tokenizer: o200k_base
   train_txt: Akutagawa.txt
   test_txt: Akutagawa_test.txt
   train_val_ratio: 0.95
   epochs: 50
-  checkpoint_count: 5
+  checkpoint_count: 10
   drop_rate: 0.1
   saved_checkpoint: ""
-  initial_lr: 0.00001
-  peak_lr: 0.0001
+  initial_lr: 0.00003
+  peak_lr: 0.0003
+
+# - name: Akutagawa_Medium_o200k_ep50_drop01_lr1e3
+#   model: GPT2_Medium
+#   tokenizer: o200k_base
+#   train_txt: Akutagawa.txt
+#   test_txt: Akutagawa_test.txt
+#   train_val_ratio: 0.95
+#   epochs: 50
+#   checkpoint_count: 10
+#   drop_rate: 0.1
+#   saved_checkpoint: ""
+#   initial_lr: 0.0001
+#   peak_lr: 0.001
+

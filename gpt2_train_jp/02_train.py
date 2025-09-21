@@ -90,7 +90,7 @@ def Train(device, conf):
     del val_loader
     del text_data
 
-def load_train_conf():
+def load_train_conf_list():
     with open('train_conf.yaml', 'r', encoding='utf-8') as f:
         train_conf = yaml.safe_load(f)
 
@@ -120,9 +120,9 @@ def main():
     print("")
 
     # Train loop
-    train_conf = load_train_conf()
+    train_conf_list = load_train_conf_list()
 
-    for conf in train_conf:
+    for conf in train_conf_list:
         torch.cuda.empty_cache()
         torch.manual_seed(123)
 

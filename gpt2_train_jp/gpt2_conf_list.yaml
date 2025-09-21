@@ -16,7 +16,7 @@ GPT2_Large:
     emb_dim: 1280
     n_heads: 20
     n_layers: 36
-    batch_sz: 4
+    batch_sz: 3
 
 GPT2_XL:
     emb_dim: 1600

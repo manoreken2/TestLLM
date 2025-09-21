@@ -11,16 +11,16 @@
 #   initial_lr: 0.0001
 #   peak_lr: 0.001
 
-- name: Akutagawa_Small_o200k_ep50_drop0
-  model: GPT2_Small
-  tokenizer: o200k_base
-  train_txt: Akutagawa.txt
-  test_txt: Akutagawa_test.txt
-  epochs: 50
-  checkpoint_count: 10
-  drop_rate: 0.0
-  initial_lr: 0.0001
-  peak_lr: 0.001
+#- name: Akutagawa_Small_o200k_ep50_drop0
+#  model: GPT2_Small
+#  tokenizer: o200k_base
+#  train_txt: Akutagawa.txt
+#  test_txt: Akutagawa_test.txt
+#  epochs: 50
+#  checkpoint_count: 10
+#  drop_rate: 0.0
+#  initial_lr: 0.0001
+#  peak_lr: 0.001
 
 - name: Akutagawa_Small_o200k_ep50_drop01
   model: GPT2_Small
@@ -29,7 +29,7 @@
   test_txt: Akutagawa_test.txt
   epochs: 50
   checkpoint_count: 10
-  drop_rate: 0.0
+  drop_rate: 0.1
   initial_lr: 0.0001
   peak_lr: 0.001
 

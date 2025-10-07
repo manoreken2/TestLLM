@@ -8,6 +8,19 @@ Original book sourcecode: https://github.com/rasbt/LLMs-from-scratch
 
 Tested on x64 PC, Ubuntu Linux 24.04.3, NVIDIA RTX 5090
 
+```bash
+sudo apt update
+sudo apt upgrade
+sudo apt install -y nvidia-driver-580-open
+sudo reboot
+```
+
+On the next boot, check the gpu is recognized correctly
+
+```bash
+nvidia-smi
+```
+
 Install MiniForge https://github.com/conda-forge/miniforge
 
 Create conda environment for gpt2_train_jp
@@ -26,6 +39,8 @@ pip install -r requirements.txt
 ```
 
 ## Prepare dataset
+
+Download text files from Aozora bunko https://www.aozora.gr.jp/
 
 Converts Aozora bunko text to UTF-8
 
@@ -52,3 +67,13 @@ Then run
 python 02_train.py
 ```
 
+## Predict
+
+Run 03_predict.py to predict text
+
+```bash
+$ python 03_predict.py --input_str "僕は"
+PyTorch version 2.8.0+cu129. Using cuda device. CUDA version: 12.9. high matmul precision. 
+    僕は人並みにリュック・サックを背負い、あの上高地の温泉宿から穂高山へ登ろうとしました。穂高山へ登るのには御承知のとおり梓川をさかのぼるほかはありません。僕は前に穂高山はもちろん、槍ヶ岳にも登っていましたから、朝霧の下りた梓川の谷を案
+Pred completed in 28.69 sec.
+```

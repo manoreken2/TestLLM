@@ -99,18 +99,18 @@ class GPTModelFast(nn.Module):
     3. Uses PyTorch's scaled_dot_product_attention instead of a custom MultiHeadAttention.
     4. Automatically enables FlashAttention on compatible GPUs.
     """
-    def __init__(self, cfg):
+    def __init__(self, gpt2_conf):
         super().__init__()
-        self.context_length = cfg["context_length"]
-        self.tok_emb = nn.Embedding(cfg["vocab_size"], cfg["emb_dim"])
-        self.pos_emb = nn.Embedding(self.context_length, cfg["emb_dim"])
-        self.drop_emb = nn.Dropout(cfg["drop_rate"])
+        self.context_length = gpt2_conf["context_length"]
+        self.tok_emb = nn.Embedding(gpt2_conf["vocab_size"], gpt2_conf["emb_dim"])
+        self.pos_emb = nn.Embedding(self.context_length, gpt2_conf["emb_dim"])
+        self.drop_emb = nn.Dropout(gpt2_conf["drop_rate"])
 
         self.trf_blocks = nn.Sequential(
-            *[TransformerBlockFast(cfg) for _ in range(cfg["n_layers"])])
+            *[TransformerBlockFast(gpt2_conf) for _ in range(gpt2_conf["n_layers"])])
 
-        self.final_norm = nn.LayerNorm(cfg["emb_dim"])
-        self.out_head = nn.Linear(cfg["emb_dim"], cfg["vocab_size"], bias=False)
+        self.final_norm = nn.LayerNorm(gpt2_conf["emb_dim"])
+        self.out_head = nn.Linear(gpt2_conf["emb_dim"], gpt2_conf["vocab_size"], bias=False)
 
     def forward(self, in_idx):
         batch_size, seq_len = in_idx.shape

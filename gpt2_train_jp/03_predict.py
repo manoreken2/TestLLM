@@ -1,50 +1,41 @@
 import torch
-import tiktoken
 import time
-from importlib.metadata import version
 from train_model import load_model
 from train_model import generate_and_print_sample
-import yaml
+from helpers import setup_torch_device
+import argparse
+import pathlib
 
-start_time = time.time()
 
-torch.manual_seed(123)
+def main(args):
+    start_time = time.time()
 
-checkpoint_filename = "checkpoints_Small_drop01/model_ep500.pth" 
+    torch.manual_seed(123)
+    device = setup_torch_device()
 
-tokenizer = tiktoken.get_encoding("gpt2")
+    model, tokenizer, _, _, _ = load_model(device, args.checkpoint_file)
 
-with open('gpt2_conf_list.yaml', 'r') as f:
-    gpt2_conf_list = yaml.safe_load(f)
+    if args.input_text_file.suffix == '.txt':
+        # テスト出力用プロンプト文章。
+        with open(args.input_text_file, "r", encoding="utf-8") as file:
+            txt_list = [line.rstrip() for line in file]
+        for txt in txt_list:
+            generate_and_print_sample(model, tokenizer, device, txt, args.max_new_tokens)
+    else:
+        generate_and_print_sample(model, tokenizer, device, args.input_str, args.max_new_tokens)
 
-cfg = gpt2_conf_list["GPT2_Small_conf"]
+    end_time = time.time()
+    print(f"Pred completed in {(end_time - start_time):.2f} sec.")
 
-# 共通の設定値。
-cfg["vocab_size"] = tokenizer.n_vocab
-cfg["drop_rate"] = 0.0 # predのときはdropしない。
-cfg["qkv_bias"] = False
-cfg["context_length"] = 1024
+if __name__ == "__main__":
 
-with open('gpt2_conf_list.yaml', 'r') as f:
-    gpt2_conf_list = yaml.safe_load(f)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--checkpoint_file', type=pathlib.Path, default="chkpt_Kappa_Small_o200k_ep50_drop0_LR1e3/ep50.pth")
+    parser.add_argument('--input_str', type=str, default="僕は")
+    parser.add_argument('--input_text_file', type=pathlib.Path, default="")
+    parser.add_argument('--max_new_tokens', type=int, default=100)
+    args = parser.parse_args()
 
-cfg = gpt2_conf_list["GPT2_Small_conf"]
-
-# 共通の設定値。
-cfg["vocab_size"] = tokenizer.n_vocab
-cfg["drop_rate"] = 0.0 # pred時はdropしない。
-cfg["qkv_bias"] = False
-cfg["context_length"] = 1024
-
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print("torch version:", version("torch"))
-print(f"Using {device} device.")
-
-model, optimizer = load_model(device, cfg, checkpoint_filename)
-
-generate_and_print_sample(model, tokenizer, device, "河童")
-
-end_time = time.time()
-print(f"Pred completed in {(end_time - start_time):.2f} sec.")
+    main(args)
 
 

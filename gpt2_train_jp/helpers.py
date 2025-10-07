@@ -1,17 +1,15 @@
-# Copyright (c) Sebastian Raschka under Apache License 2.0 (see LICENSE.txt).
-# Source for "Build a Large Language Model From Scratch"
-#   - https://www.manning.com/books/build-a-large-language-model-from-scratch
-# Code: https://github.com/rasbt/LLMs-from-scratch
-
-# This file collects all the relevant code that we covered thus far
-# throughout Chapters 2-4.
-# This file can be run as a standalone script.
+# Original copyright
+#   Copyright (c) Sebastian Raschka under Apache License 2.0 (see LICENSE.txt).
+#   Source for "Build a Large Language Model From Scratch"
+#     - https://www.manning.com/books/build-a-large-language-model-from-scratch
+#   Code: https://github.com/rasbt/LLMs-from-scratch
 
 import torch
 import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
 import matplotlib.pyplot as plt
 import math
+from importlib.metadata import version
 
 #####################################
 # Chapter 2
@@ -312,7 +310,7 @@ def generate(model, idx, max_new_tokens, temperature=0.0, top_k=None, eos_id=Non
     return idx
 
 
-def generate_and_print_sample(f, model, tokenizer, device, start_context, max_new_tokens):
+def generate_and_print_sample(model, tokenizer, device, start_context, max_new_tokens=100, f=None):
     model.eval() # ドロップアウト率を0にする。
 
     context_size = model.pos_emb.weight.shape[0]
@@ -324,7 +322,8 @@ def generate_and_print_sample(f, model, tokenizer, device, start_context, max_ne
         decoded_text = token_ids_to_text(token_ids, tokenizer)
         decoded_text = decoded_text.replace("\n", " ")
         print(f"    {decoded_text}")  # Compact print format
-        f.write(f"{decoded_text}\n")
+        if f is not None:
+            f.write(f"{decoded_text}\n")
 
     model.train() # ドロップアウト率を訓練設定にする。
 
@@ -396,10 +395,27 @@ def token_ids_to_text(token_ids, tokenizer):
     flat = token_ids.squeeze(0)  # remove batch dimension
     return tokenizer.decode(flat.tolist())
 
+##############################################################################
+
 # 過学習かどうかを判断するためのグラフ。
 def create_loss_graph(conf, train_losses, tokens_seen, val_losses):
     n_epochs = conf['epochs']
     epochs_tensor = torch.linspace(1, n_epochs, len(train_losses))
     plot_loss_perplexities(conf['name'], epochs_tensor, tokens_seen, train_losses, val_losses)
-    plt.tight_layout(); plt.savefig(f"Loss_{conf['name']}.png")
+    plt.tight_layout(); plt.savefig(f"Loss_{conf['name']}.png", dpi=200)
     #plt.show()
+
+def setup_torch_device(matmul_precision = "high"):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"PyTorch version {version("torch")}. Using {device} device. ", end='')
+    if torch.cuda.is_available():
+        print(f"CUDA version: {torch.version.cuda}. ", end='')
+
+        capability = torch.cuda.get_device_capability()
+        if capability[0] >= 7:  # Volta (7.0+), Turing (7.5+), Ampere (8.0+), Hopper (9.0+)
+            torch.set_float32_matmul_precision(matmul_precision)
+            print(f"{matmul_precision} matmul precision. ", end='')
+        else:
+            print("Tensor cores not supported on this GPU. Using default float32 matmul precision. ", end='')
+    print("")
+    return device

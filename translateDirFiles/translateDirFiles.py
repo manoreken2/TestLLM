@@ -6,8 +6,8 @@ import glob
 
 def query(in_text, model_name, tgt_lang):
     prompt = \
-      f'Translate the text enclosed with triplequote to {tgt_lang}. Enclose the translated text with triplequote. ```{in_text}``` ' \
-      f'Translate the text enclosed with triplequote to {tgt_lang}. Enclose the translated text with triplequote.'
+      f'Translate the whole text without skipping enclosed with triplequote to {tgt_lang}. Enclose the translated text with triplequote. ```{in_text}``` ' \
+      f'Translate the whole text without skipping enclosed with triplequote to {tgt_lang}. Enclose the translated text with triplequote.'
 
     # print(f"{prompt}\n")
 
@@ -97,7 +97,7 @@ def main():
     parser.add_argument("--output_file",        help="Filename to write translated HTML text.",   type=str, default="out.html")
     parser.add_argument("--model_name",         help="Model used on inference.",                  type=str, default="deepseek-r1:32b")
     parser.add_argument("--tgt_lang",           help="Target language name.",                     type=str, default="Modern Japanese")
-    parser.add_argument("--q_text_limit",       help="Query text limit characters count.",        type=int, default=2048)
+    parser.add_argument("--q_text_limit",       help="Query text limit characters count.",        type=int, default=1024)
     parser.add_argument("--sentence_delimiter", help="Sentence delimiter.",                       type=str, default="。")
 
     args = parser.parse_args()

@@ -6,16 +6,17 @@ import glob
 
 def query(in_text, model_name, tgt_lang):
     prompt = \
-      f'Translate the whole text without skipping enclosed with triplequote to {tgt_lang}. Enclose the translated text with triplequote. ```{in_text}``` ' \
-      f'Translate the whole text without skipping enclosed with triplequote to {tgt_lang}. Enclose the translated text with triplequote.'
+      f'Translate the whole text without skipping enclosed with triplequote to {tgt_lang}. Do not output the original text. Enclose the translated text with triplequote. ```{in_text}``` ' \
+      f'Translate the whole text without skipping enclosed with triplequote to {tgt_lang}. Do not output the original text. Enclose the translated text with triplequote.'
 
     # print(f"{prompt}\n")
 
-    result = ollama.generate(model=model_name, \
-                             prompt=prompt)
+    result = ollama.generate(model=model_name,
+                             prompt=prompt,
+                             think=True)
     out_text = result['response']
 
-    print(f"{out_text}\n")
+    #print(f"{out_text}\n")
     return out_text
 
 def translate_one_file(args, in_file_name, w):

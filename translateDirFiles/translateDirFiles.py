@@ -1,9 +1,12 @@
 import ollama
 import argparse
 import io
-import time    
+import time
 import glob
 import markdown
+
+# 以下のプログラムを参考に作成。
+# https://github.com/ollama/ollama-python/blob/main/examples/chat.py
 
 def query(in_text, model_name, tgt_lang):
     prompt = \
@@ -66,33 +69,33 @@ def translate_one_file(args, in_file_name, w):
     w.write(s)
 
     for in_text in in_text_list:
-        resp_message = query(in_text, args.model_name, args.tgt_lang)
-
-        # column begin/end tag
-        tdBgn='<td><span style=\"white-space: pre-wrap;\">'
-        tdEnd='</span></td>'
-
-        content = markdown.markdown(resp_message.content)
-
-        # resp_message.thinkingに think内容、
-        # resp_message.contentに、回答文が戻る。
-        s = f"\n<tr>{tdBgn}{in_text}{tdEnd}" + \
-                    f"{tdBgn}{resp_message.thinking}{tdEnd}" + \
-                    f"{tdBgn}{content}{tdEnd}</tr>\n"
-        w.write(s)
+        resp_msg = query(in_text, args.model_name, args.tgt_lang)
 
         # 経過時間表示。
         now_time = time.time()
-        print(f" Inference {i} took {(now_time - checkpoint_time):.3f} sec.")
+        elapsed_time = now_time - checkpoint_time
         checkpoint_time = now_time
+        print(f"  Translation {i} took {elapsed_time:.3f} sec.")
 
+        # table column begin/end tag
+        tdBgn='<td><span style=\"white-space: pre-wrap;\">'
+        tdEnd='</span></td>'
+
+        # resp_msg.thinkingに think内容、
+        # resp_msg.contentに、markdown書式の回答文が戻る。
+        # markdown → HTML変換。
+        content = markdown.markdown(resp_msg.content)
+        s = f"\n<tr>{tdBgn}{in_text}{tdEnd}" + \
+                    f"{tdBgn}{resp_msg.thinking}<br >Translation took {elapsed_time:.1f} seconds. {tdEnd}" + \
+                    f"{tdBgn}{content}{tdEnd}</tr>\n"
+        w.write(s)
         w.flush()
         i = i+1
         
     w.write("</table><br>\n")
+    w.flush()
 
 def main():
-    # print(ollama.list().get('models', []))
     start_time = time.time()
 
     parser = argparse.ArgumentParser("translate")

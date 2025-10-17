@@ -3,21 +3,29 @@ import argparse
 import io
 import time    
 import glob
+import markdown
 
 def query(in_text, model_name, tgt_lang):
     prompt = \
-      f'Translate the whole text without skipping enclosed with triplequote to {tgt_lang}. Do not output the original text. Enclose the translated text with triplequote. ```{in_text}``` ' \
-      f'Translate the whole text without skipping enclosed with triplequote to {tgt_lang}. Do not output the original text. Enclose the translated text with triplequote.'
+      f"Translate the whole text enclosed with triplequote to {tgt_lang}. Never output the original text! Think with Japanese language. ```{in_text}``` "
+
+    messages = [
+        {
+            'role': 'user',
+            'content': prompt,
+        },
+    ]
 
     # print(f"{prompt}\n")
 
-    result = ollama.generate(model=model_name,
-                             prompt=prompt,
+    response = ollama.chat(model=model_name,
+                             messages=messages,
                              think=True)
-    out_text = result['response']
+    
+    # print('Thinking:\n========\n\n' + response.message.thinking)
+    # print('\nResponse:\n========\n\n' + response.message.content)
 
-    #print(f"{out_text}\n")
-    return out_text
+    return response.message
 
 def translate_one_file(args, in_file_name, w):
     checkpoint_time = time.time()
@@ -25,7 +33,7 @@ def translate_one_file(args, in_file_name, w):
     # 入力文書を文単位で区切って、2048文字程度の文の束に分割。
     # q_text_list: the list of original text sentences.
     in_text_list = []
-    with io.open(in_file_name, mode="r", encoding="utf-8") as r:        
+    with io.open(in_file_name, mode="r", encoding="utf-8") as r:
         # 1行づつ読み、1個の文字列whole_textに連結。
         whole_text = ""
         for line in r.readlines():
@@ -54,29 +62,23 @@ def translate_one_file(args, in_file_name, w):
 
     w.write('<table border="1">\n')
 
-    s = f"<tr><td>input text<br>{in_file_name}</td><td>thoughts</td><td>{args.tgt_lang} translated text</td><td>extra comments</td></tr>\n"
+    s = f"<tr><td>input text<br>{in_file_name}</td><td>thoughts</td><td>{args.tgt_lang} translated text</td></tr>\n"
     w.write(s)
 
     for in_text in in_text_list:
-        out_text = query(in_text, args.model_name, args.tgt_lang)
+        resp_message = query(in_text, args.model_name, args.tgt_lang)
 
         # column begin/end tag
         tdBgn='<td><span style=\"white-space: pre-wrap;\">'
         tdEnd='</span></td>'
 
-        # out_textは、<think>考察</think> '''訳文'''考察2
-        # の形式で戻る。トリプルクォートの字が数種類ある。
-        # 稀に考察の中にトリプルクォートが現れることがあり、その場合列が増えてズレが発生するため
-        # 出力ファイルを観察し手動修正する必要あり。
-        # 考察2は省略される場合があるがこれは問題ない。
-        out_text = out_text.replace("<think>", "")
-        out_text = out_text.replace("</think>", "")
-        out_text = out_text.replace("'''", f"\n{tdEnd}{tdBgn}\n")
-        out_text = out_text.replace('"""', f"\n{tdEnd}{tdBgn}\n")
-        out_text = out_text.replace("```", f"\n{tdEnd}{tdBgn}\n")
+        content = markdown.markdown(resp_message.content)
 
-        s = f"\n<tr>{tdBgn}\n{in_text}\n{tdEnd}" + \
-                    f"{tdBgn}\n{out_text}\n{tdEnd}\n"
+        # resp_message.thinkingに think内容、
+        # resp_message.contentに、回答文が戻る。
+        s = f"\n<tr>{tdBgn}{in_text}{tdEnd}" + \
+                    f"{tdBgn}{resp_message.thinking}{tdEnd}" + \
+                    f"{tdBgn}{content}{tdEnd}</tr>\n"
         w.write(s)
 
         # 経過時間表示。

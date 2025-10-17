@@ -19,15 +19,9 @@ def query(in_text, model_name, tgt_lang):
         },
     ]
 
-    # print(f"{prompt}\n")
-
     response = ollama.chat(model=model_name,
                              messages=messages,
                              think=True)
-    
-    # print('Thinking:\n========\n\n' + response.message.thinking)
-    # print('\nResponse:\n========\n\n' + response.message.content)
-
     return response.message
 
 def translate_one_file(args, in_file_name, w):

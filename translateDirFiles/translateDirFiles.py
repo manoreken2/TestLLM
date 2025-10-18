@@ -57,7 +57,12 @@ def translate_one_file(args, in_file_name, w):
     # 翻訳実行、結果をHTML形式で保存する。
     i=0
 
-    w.write('<table border="1">\n')
+    w.write('<table border="1" style="width: 100%">\n')
+    w.write('  <colgroup>\n')
+    w.write('    <col span="1" style="width: 30%;">\n')
+    w.write('    <col span="1" style="width: 20%;">\n')
+    w.write('    <col span="1" style="width: 50%;">\n')
+    w.write('  </colgroup>\n')
 
     s = f"<tr><td>input text<br />{in_file_name}</td><td>thoughts</td><td>{args.tgt_lang} translated text</td></tr>\n"
     w.write(s)

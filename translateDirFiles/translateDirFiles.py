@@ -49,6 +49,7 @@ def translate_one_file(args, in_file_name, w):
                 if args.q_text_limit <= len(in_text):
                     in_text_list.append(in_text)
                     in_text = ""
+        in_text = in_text.strip()
         if 0 < len(in_text):
             in_text_list.append(in_text)
 
@@ -59,12 +60,12 @@ def translate_one_file(args, in_file_name, w):
 
     w.write('<table border="1" style="width: 100%">\n')
     w.write('  <colgroup>\n')
-    w.write('    <col span="1" style="width: 30%;">\n')
-    w.write('    <col span="1" style="width: 20%;">\n')
-    w.write('    <col span="1" style="width: 50%;">\n')
+    w.write('    <col span="1" style="width: 15%;">\n')
+    w.write('    <col span="1" style="width: 70%;">\n')
+    w.write('    <col span="1" style="width: 15%;">\n')
     w.write('  </colgroup>\n')
 
-    s = f"<tr><td>input text<br />{in_file_name}</td><td>thoughts</td><td>{args.tgt_lang} translated text</td></tr>\n"
+    s = f"<tr><td>input text<br />{in_file_name}</td><td>{args.tgt_lang} translated text</td><td>thoughts</td></tr>\n"
     w.write(s)
 
     # table column begin/end tag, with span tag to keep line ending.
@@ -86,9 +87,11 @@ def translate_one_file(args, in_file_name, w):
         content = markdown2.markdown(resp_msg.content, extras=["tables"])
 
         # contentはHTML書式なのでspan不要。in_text, thinkingはspan必要。
-        s = f"\n<tr>{tdBgn}{in_text}{tdEnd}" + \
-                    f"{tdBgn}{resp_msg.thinking}<br />Translation took {elapsed_time:.1f} seconds. {tdEnd}" + \
-                    f"<td>{content}</td></tr>\n"
+        s = f'\n<tr  style="vertical-align:top">' + \
+                  f'{tdBgn}{in_text}{tdEnd}' + \
+                  f'<td>{content}</td>' + \
+                  f'{tdBgn}{resp_msg.thinking}<br />Translation took {elapsed_time:.1f} seconds. {tdEnd}' + \
+              f'</tr>\n'
         w.write(s)
         w.flush()
         i = i+1

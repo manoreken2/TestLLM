@@ -3,7 +3,7 @@ import argparse
 import io
 import time
 import glob
-import markdown
+import markdown2
 
 # 以下のプログラムを参考に作成。
 # https://github.com/ollama/ollama-python/blob/main/examples/chat.py
@@ -78,7 +78,7 @@ def translate_one_file(args, in_file_name, w):
         # resp_msg.thinkingに think内容、
         # resp_msg.contentに、markdown書式の回答文が戻る。
         # markdown → HTML変換。
-        content = markdown.markdown(resp_msg.content)
+        content = markdown2.markdown(resp_msg.content, extras=["tables"])
         s = f"\n<tr>{tdBgn}{in_text}{tdEnd}" + \
                     f"{tdBgn}{resp_msg.thinking}<br />Translation took {elapsed_time:.1f} seconds. {tdEnd}" + \
                     f"{tdBgn}{content}{tdEnd}</tr>\n"

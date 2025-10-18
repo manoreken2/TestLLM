@@ -59,7 +59,7 @@ def translate_one_file(args, in_file_name, w):
 
     w.write('<table border="1">\n')
 
-    s = f"<tr><td>input text<br>{in_file_name}</td><td>thoughts</td><td>{args.tgt_lang} translated text</td></tr>\n"
+    s = f"<tr><td>input text<br />{in_file_name}</td><td>thoughts</td><td>{args.tgt_lang} translated text</td></tr>\n"
     w.write(s)
 
     for in_text in in_text_list:
@@ -80,13 +80,13 @@ def translate_one_file(args, in_file_name, w):
         # markdown → HTML変換。
         content = markdown.markdown(resp_msg.content)
         s = f"\n<tr>{tdBgn}{in_text}{tdEnd}" + \
-                    f"{tdBgn}{resp_msg.thinking}<br >Translation took {elapsed_time:.1f} seconds. {tdEnd}" + \
+                    f"{tdBgn}{resp_msg.thinking}<br />Translation took {elapsed_time:.1f} seconds. {tdEnd}" + \
                     f"{tdBgn}{content}{tdEnd}</tr>\n"
         w.write(s)
         w.flush()
         i = i+1
         
-    w.write("</table><br>\n")
+    w.write("</table><br />\n")
     w.flush()
 
 def main():
@@ -103,7 +103,7 @@ def main():
     args = parser.parse_args()
 
     with io.open(args.output_file, mode="w", encoding="utf-8") as w:
-        w.write(f'Translater model: {args.model_name}<br>\n')
+        w.write(f'Translater model: {args.model_name}<br />\n')
         for in_file in glob.glob(args.input_dir + '/*.txt'):
             translate_one_file(args, in_file, w)
 

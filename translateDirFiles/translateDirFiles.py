@@ -62,6 +62,10 @@ def translate_one_file(args, in_file_name, w):
     s = f"<tr><td>input text<br />{in_file_name}</td><td>thoughts</td><td>{args.tgt_lang} translated text</td></tr>\n"
     w.write(s)
 
+    # table column begin/end tag, with span tag to keep line ending.
+    tdBgn='<td><span style=\"white-space: pre-wrap;\">'
+    tdEnd='</span></td>'
+
     for in_text in in_text_list:
         resp_msg = query(in_text, args.model_name, args.tgt_lang)
 
@@ -71,17 +75,15 @@ def translate_one_file(args, in_file_name, w):
         checkpoint_time = now_time
         print(f"  Translation {i} took {elapsed_time:.3f} sec.")
 
-        # table column begin/end tag
-        tdBgn='<td><span style=\"white-space: pre-wrap;\">'
-        tdEnd='</span></td>'
-
         # resp_msg.thinkingに think内容、
         # resp_msg.contentに、markdown書式の回答文が戻る。
         # markdown → HTML変換。
         content = markdown2.markdown(resp_msg.content, extras=["tables"])
+
+        # contentはHTML書式なのでspan不要。in_text, thinkingはspan必要。
         s = f"\n<tr>{tdBgn}{in_text}{tdEnd}" + \
                     f"{tdBgn}{resp_msg.thinking}<br />Translation took {elapsed_time:.1f} seconds. {tdEnd}" + \
-                    f"{tdBgn}{content}{tdEnd}</tr>\n"
+                    f"<td>{content}</td></tr>\n"
         w.write(s)
         w.flush()
         i = i+1

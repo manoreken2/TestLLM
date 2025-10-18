@@ -59,7 +59,7 @@ def translate_one_file(args, in_file_name, w):
 
     w.write('<table border="1">\n')
 
-    s = f"<tr><td>input text<br>{in_file_name}</td><td>thoughts</td><td>{args.tgt_lang} translated text</td></tr>\n"
+    s = f"<tr><td>input text<br />{in_file_name}</td><td>thoughts</td><td>{args.tgt_lang} translated text</td></tr>\n"
     w.write(s)
 
     # table column begin/end tag, with span tag to keep line ending.
@@ -105,7 +105,7 @@ def main():
     args = parser.parse_args()
 
     with io.open(args.output_file, mode="w", encoding="utf-8") as w:
-        w.write(f'Translater model: {args.model_name}<br>\n')
+        w.write(f'Translater model: {args.model_name}<br />\n')
         for in_file in glob.glob(args.input_dir + '/*.txt'):
             translate_one_file(args, in_file, w)
 

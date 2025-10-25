@@ -113,7 +113,7 @@ def main():
     args = parser.parse_args()
 
     with io.open(args.output_file, mode="w", encoding="utf-8") as w:
-        w.write(f'Translater model: {args.model_name}<br />\n')
+        w.write(f'Translator model: {args.model_name}<br />\n')
         for in_file in glob.glob(args.input_dir + '/*.txt'):
             translate_one_file(args, in_file, w)
 

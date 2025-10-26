@@ -45,5 +45,5 @@ open bash prompt and type
     cd xformers && python setup.py install && cd ..
 
 Llama3_8B_Ollama.ipynb is downloaded from
-https://colab.research.google.com/github/unslothai/notebooks/blob/main/nb/Llama3_(8B)-Ollama.ipynb#scrollTo=MwEbRFl0Mf3E
+https://colab.research.google.com/github/unslothai/notebooks/blob/main/nb/Llama3_(8B)-Ollama.ipynb
 

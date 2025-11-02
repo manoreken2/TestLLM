@@ -54,7 +54,7 @@ https://manoreken2.github.io/TestLLM/translateDirFiles/%E8%B3%87%E6%B2%BB%E9%80%
 資治通鑑 秦紀 日本語訳 DeepSeek-R1:671b q4
 https://manoreken2.github.io/TestLLM/translateDirFiles/%E8%B3%87%E6%B2%BB%E9%80%9A%E9%91%91_02_%E7%A7%A6%E7%B4%80_%E6%97%A5%E6%9C%AC%E8%AA%9E%E8%A8%B3.html
 
-資治通鑑 宋紀 日本語訳 (五胡十六国の劉宋) DeepSeek-R1:671b q8
+資治通鑑 宋紀 日本語訳 (東晋の後継国家の劉宋) DeepSeek-R1:671b q8
 https://manoreken2.github.io/TestLLM/translateDirFiles/%E8%B3%87%E6%B2%BB%E9%80%9A%E9%91%91_06_%E5%AE%8B%E7%B4%80_%E6%97%A5%E6%9C%AC%E8%AA%9E%E8%A8%B3.html
 
 資治通鑑 斉紀 日本語訳 (南朝斉) DeepSeek-R1:671b q8

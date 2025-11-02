@@ -1,8 +1,6 @@
 Setup
 
 requirements.txt is arranged for RTX5090.
-see the following page and install triton windows for your GPU
-https://github.com/woct0rdho/triton-windows
 
 tested on WSL 2 Ubuntu 24.04
 

@@ -8,9 +8,9 @@ import markdown2
 # 以下のプログラムを参考に作成。
 # https://github.com/ollama/ollama-python/blob/main/examples/chat.py
 
-def query(in_text, model_name, tgt_lang):
+def query(in_text, model_name, tgt_lang, extra, think):
     prompt = \
-      f"Translate the whole text enclosed with triplequote to {tgt_lang}. Never output the original text! Think with Japanese language. ```{in_text}``` "
+      f"Translate the whole text enclosed with triplequote to {tgt_lang}. {extra} Never output the original text! Output should be consist of two sections : the first section contains translated text, the second section contains commentary. ```{in_text}``` "
 
     messages = [
         {
@@ -21,7 +21,7 @@ def query(in_text, model_name, tgt_lang):
 
     response = ollama.chat(model=model_name,
                              messages=messages,
-                             think=True)
+                             think=think)
     return response.message
 
 def translate_one_file(args, in_file_name, w):
@@ -60,12 +60,20 @@ def translate_one_file(args, in_file_name, w):
 
     w.write('<table border="1" style="width: 100%">\n')
     w.write('  <colgroup>\n')
-    w.write('    <col span="1" style="width: 15%;">\n')
-    w.write('    <col span="1" style="width: 70%;">\n')
-    w.write('    <col span="1" style="width: 15%;">\n')
+    if args.think:
+        w.write('    <col span="1" style="width: 15%;">\n')
+        w.write('    <col span="1" style="width: 70%;">\n')
+        w.write('    <col span="1" style="width: 15%;">\n')
+    else:
+        w.write('    <col span="1" style="width: 30%;">\n')
+        w.write('    <col span="1" style="width: 70%;">\n')
     w.write('  </colgroup>\n')
 
-    s = f"<tr><td>input text<br />{in_file_name}</td><td>{args.tgt_lang} translated text</td><td>thoughts</td></tr>\n"
+    s = f"<tr><td>input text<br />{in_file_name}</td><td>{args.tgt_lang} translated text</td>"
+    if args.think:
+        s = s + "<td>thoughts</td></tr>\n"
+    else:
+        s = s + "\n"
     w.write(s)
 
     # table column begin/end tag, with span tag to keep line ending.
@@ -73,7 +81,7 @@ def translate_one_file(args, in_file_name, w):
     tdEnd='</span></td>'
 
     for in_text in in_text_list:
-        resp_msg = query(in_text, args.model_name, args.tgt_lang)
+        resp_msg = query(in_text, args.model_name, args.tgt_lang, args.extra, args.think)
 
         # 経過時間表示。
         now_time = time.time()
@@ -89,9 +97,12 @@ def translate_one_file(args, in_file_name, w):
         # contentはHTML書式なのでspan不要。in_text, thinkingはspan必要。
         s = f'\n<tr  style="vertical-align:top">' + \
                   f'{tdBgn}{in_text}{tdEnd}' + \
-                  f'<td>{content}</td>' + \
-                  f'{tdBgn}{resp_msg.thinking}<br />Translation took {elapsed_time:.1f} seconds. {tdEnd}' + \
-              f'</tr>\n'
+                  f'<td>{content}'
+        if args.think:
+            s = s + f'</td>{tdBgn}{resp_msg.thinking}<br />Translation took {elapsed_time:.1f} seconds. {tdEnd}'
+        else:
+            s = s + f'<br />Translation took {elapsed_time:.1f} seconds.</td>'
+        '</tr>\n'
         w.write(s)
         w.flush()
         i = i+1
@@ -107,13 +118,18 @@ def main():
     parser.add_argument("--output_file",        help="Filename to write translated HTML text.",   type=str, default="out.html")
     parser.add_argument("--model_name",         help="Model used on inference.",                  type=str, default="deepseek-r1:32b")
     parser.add_argument("--tgt_lang",           help="Target language name.",                     type=str, default="Modern Japanese")
-    parser.add_argument("--q_text_limit",       help="Query text limit characters count.",        type=int, default=1024)
+    parser.add_argument("--extra",              help="Extra prompt text. should end with .",      type=str, default="")
+    parser.add_argument("--q_text_limit",       help="Query text limit characters count.",        type=int, default=512)
     parser.add_argument("--sentence_delimiter", help="Sentence delimiter.",                       type=str, default="。")
+
+    parser.add_argument("--think",              help="Think enable (default).",                   action='store_true')
+    parser.add_argument("--no-think", dest="think", help="Think disable.",                        action='store_false')
+    parser.set_defaults(think=True)
 
     args = parser.parse_args()
 
     with io.open(args.output_file, mode="w", encoding="utf-8") as w:
-        w.write(f'Translater model: {args.model_name}<br />\n')
+        w.write(f'Translator model: {args.model_name}<br />\n')
         for in_file in glob.glob(args.input_dir + '/*.txt'):
             translate_one_file(args, in_file, w)
 

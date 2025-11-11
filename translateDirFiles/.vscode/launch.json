@@ -11,7 +11,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args":  [ "--input_dir=資治通鑑", "--tgt_lang=Modern Japanese with commentary, it is excerpt from 資治通鑑", "--model_name=deepseek-r1:671b-0528-q8_0", "--output_file=s2_translated_012_ds671b_q8.html" ]
+            "args":  [ "--input_dir=資治通鑑", "--no-think", "--tgt_lang=Modern Japanese", "--extra=it is excerpt from 資治通鑑. Never output okurigana.", "--model_name=deepseek-r1:671b-0528-q4_K_M", "--output_file=s_魏_1_q4.html" ]
         }
     ]
 }

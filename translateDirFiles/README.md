@@ -49,19 +49,23 @@ Test input data 詩経
 
 
 資治通鑑 周紀 日本語訳 DeepSeek-R1:671b q4
-https://manoreken2.github.io/TestLLM/translateDirFiles/%E8%B3%87%E6%B2%BB%E9%80%9A%E9%91%91_01_%E5%91%A8%E7%B4%80_%E6%97%A5%E6%9C%AC%E8%AA%9E%E8%A8%B3.html
+https://manoreken2.github.io/TestLLM/translateDirFiles/資治通鑑_01_周紀_日本語訳.html
 
 資治通鑑 秦紀 日本語訳 DeepSeek-R1:671b q4
-https://manoreken2.github.io/TestLLM/translateDirFiles/%E8%B3%87%E6%B2%BB%E9%80%9A%E9%91%91_02_%E7%A7%A6%E7%B4%80_%E6%97%A5%E6%9C%AC%E8%AA%9E%E8%A8%B3.html
+https://manoreken2.github.io/TestLLM/translateDirFiles/資治通鑑_02_秦紀_日本語訳.html
+
+資治通鑑 魏紀 日本語訳 DeepSeek-R1:671b q4
+https://manoreken2.github.io/TestLLM/translateDirFiles/資治通鑑_04_魏紀_日本語訳.html
 
 資治通鑑 晋紀 日本語訳 DeepSeek-R1:671b q8
-https://manoreken2.github.io/TestLLM/translateDirFiles/%E8%B3%87%E6%B2%BB%E9%80%9A%E9%91%91_05_%E6%99%8B%E7%B4%80_%E6%97%A5%E6%9C%AC%E8%AA%9E%E8%A8%B3.html
+https://manoreken2.github.io/TestLLM/translateDirFiles/資治通鑑_05_晋紀_日本語訳.html
 
 資治通鑑 宋紀 日本語訳 (東晋の後継国家の劉宋) DeepSeek-R1:671b q8
-https://manoreken2.github.io/TestLLM/translateDirFiles/%E8%B3%87%E6%B2%BB%E9%80%9A%E9%91%91_06_%E5%AE%8B%E7%B4%80_%E6%97%A5%E6%9C%AC%E8%AA%9E%E8%A8%B3.html
+https://manoreken2.github.io/TestLLM/translateDirFiles/資治通鑑_06_宋紀_日本語訳.html
 
 資治通鑑 斉紀 日本語訳 (南朝斉) DeepSeek-R1:671b q8
-https://manoreken2.github.io/TestLLM/translateDirFiles/%E8%B3%87%E6%B2%BB%E9%80%9A%E9%91%91_07_%E6%96%89%E7%B4%80_%E6%97%A5%E6%9C%AC%E8%AA%9E%E8%A8%B3.html
+https://manoreken2.github.io/TestLLM/translateDirFiles/資治通鑑_07_斉紀_日本語訳.html
 
 資治通鑑 梁紀 日本語訳 (南朝梁) DeepSeek-R1:671b q8
-https://manoreken2.github.io/TestLLM/translateDirFiles/%E8%B3%87%E6%B2%BB%E9%80%9A%E9%91%91_08_%E6%A2%81%E7%B4%80_%E6%97%A5%E6%9C%AC%E8%AA%9E%E8%A8%B3.html
+https://manoreken2.github.io/TestLLM/translateDirFiles/資治通鑑_08_梁紀_日本語訳.html
+

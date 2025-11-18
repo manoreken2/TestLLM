@@ -1,14 +1,9 @@
-# TestLLM
+# TestLLM project: Programs utilize Ollama LLM inference
 
-Programs utilize Ollama LLM inference
+- Translate long text https://github.com/manoreken2/TestLLM/tree/main/translateLongTxt
+- Batch text translation of the directory specified https://github.com/manoreken2/TestLLM/tree/main/translateDirFiles
 
-See subdirectories for more details:
-
-Translate long text https://github.com/manoreken2/TestLLM/tree/main/translateLongTxt
-
-Batch text translation of the directory specified https://github.com/manoreken2/TestLLM/tree/main/translateDirFiles
-
-## Program output examples:
+## Output examples:
 
 資治通鑑 日本語訳
 https://manoreken2.github.io/TestLLM/translateDirFiles/資治通鑑_日本語訳.html

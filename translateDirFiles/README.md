@@ -47,6 +47,8 @@ Test input data 詩経
 詩経 summary by DeepSeek-R1:671b-0528
  https://manoreken2.github.io/TestLLM/translateDirFiles/sikyou_summary.html
 
+資治通鑑 日本語訳
+https://manoreken2.github.io/TestLLM/translateDirFiles/資治通鑑_日本語訳.html
 
 資治通鑑 周紀 日本語訳 DeepSeek-R1:671b q4
 https://manoreken2.github.io/TestLLM/translateDirFiles/資治通鑑_01_周紀_日本語訳.html

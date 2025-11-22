@@ -71,3 +71,5 @@ https://manoreken2.github.io/TestLLM/translateDirFiles/資治通鑑_07_斉紀_�
 資治通鑑 梁紀 日本語訳 (南朝梁) DeepSeek-R1:671b q8
 https://manoreken2.github.io/TestLLM/translateDirFiles/資治通鑑_08_梁紀_日本語訳.html
 
+Le Petit Prince 日本語訳
+https://manoreken2.github.io/TestLLM/translateDirFiles/Le_Petit_Prince_日本語訳/index.html

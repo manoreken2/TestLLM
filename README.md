@@ -17,4 +17,5 @@ https://manoreken2.github.io/TestLLM/translateLongTxt/test/Strindberg_Inferno_JP
 ストリントベリ 伝説 日本語訳
 https://manoreken2.github.io/TestLLM/translateLongTxt/test/Strindberg_Legenden_JP_DeepSeekR1_671b_0528.html
 
-
+Le Petit Prince 日本語訳
+https://manoreken2.github.io/TestLLM/translateDirFiles/Le_Petit_Prince_日本語訳/index.html

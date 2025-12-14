@@ -8,7 +8,7 @@ import markdown2
 # 以下のプログラムを参考に作成。
 # https://github.com/ollama/ollama-python/blob/main/examples/chat.py
 
-def query(in_text, model_name, tgt_lang, extra, think):
+def query(in_text, model_name, tgt_lang, extra, think, num_thr):
     prompt = \
       f"Translate the whole text enclosed with triplequote to {tgt_lang}. {extra} Never output the original text! Output should be consist of two sections : the first section contains translated text, the second section contains commentary. ```{in_text}``` "
 
@@ -19,9 +19,14 @@ def query(in_text, model_name, tgt_lang, extra, think):
         },
     ]
 
+    options = {
+        'num_thread': num_thr,
+    }
+
     response = ollama.chat(model=model_name,
                              messages=messages,
-                             think=think)
+                             think=think,
+                             options=options)
     return response.message
 
 def translate_one_file(args, in_file_name, w):
@@ -81,7 +86,7 @@ def translate_one_file(args, in_file_name, w):
     tdEnd='</span></td>'
 
     for in_text in in_text_list:
-        resp_msg = query(in_text, args.model_name, args.tgt_lang, args.extra, args.think)
+        resp_msg = query(in_text, args.model_name, args.tgt_lang, args.extra, args.think, args.num_thread)
 
         # 経過時間表示。
         now_time = time.time()
@@ -120,6 +125,7 @@ def main():
     parser.add_argument("--tgt_lang",           help="Target language name.",                     type=str, default="Modern Japanese")
     parser.add_argument("--extra",              help="Extra prompt text. should end with .",      type=str, default="")
     parser.add_argument("--q_text_limit",       help="Query text limit characters count.",        type=int, default=512)
+    parser.add_argument("--num_thread",         help="Num of CPU worker thread.",                 type=int, default=16)
     parser.add_argument("--sentence_delimiter", help="Sentence delimiter.",                       type=str, default="。")
 
     parser.add_argument("--think",              help="Think enable (default).",                   action='store_true')

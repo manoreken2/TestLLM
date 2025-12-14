@@ -4,13 +4,14 @@ import io
 import time
 import glob
 import markdown2
+import re
 
 # 以下のプログラムを参考に作成。
 # https://github.com/ollama/ollama-python/blob/main/examples/chat.py
 
 def query(in_text, model_name, tgt_lang, extra, think, num_thr):
     prompt = \
-      f"Translate the whole text enclosed with triplequote to {tgt_lang}. {extra} Never output the original text! Output should be consist of two sections : the first section contains translated text, the second section contains commentary. ```{in_text}``` "
+      f"Translate the whole text enclosed with triplequote to {tgt_lang}. {extra} Never output the original text! ```{in_text}``` "
 
     messages = [
         {
@@ -87,6 +88,14 @@ def translate_one_file(args, in_file_name, w):
 
     for in_text in in_text_list:
         resp_msg = query(in_text, args.model_name, args.tgt_lang, args.extra, args.think, args.num_thread)
+
+        resp_content = resp_msg.content
+
+        # resp_content内に</think>が現れるとき、先頭から</think>までを削除
+        think_tag="</think>"
+        match = re.search(think_tag, resp_content)
+        if match:
+            resp_content = resp_content[match.start()+len(think_tag):]
 
         # 経過時間表示。
         now_time = time.time()

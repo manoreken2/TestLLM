@@ -9,32 +9,56 @@ import re
 # 以下のプログラムを参考に作成。
 # https://github.com/ollama/ollama-python/blob/main/examples/chat.py
 
-def query(in_text, model_name, tgt_lang, extra, think, num_thr):
-    prompt = \
-      f"Translate the whole text enclosed with triplequote to {tgt_lang}. {extra} Never output the original text! ```{in_text}``` "
 
-    messages = [
+# 入力文字列in_textをargs.tgt_langに翻訳。
+def perform_translation(in_text, args):
+    prompt = \
+      f"Translate the whole text enclosed with triplequote to {args.tgt_lang}. {args.extra} Never output the original text! ```{in_text}``` "
+
+    msg = [
         {
             'role': 'user',
             'content': prompt,
         },
     ]
 
-    options = {
-        'num_thread': num_thr,
+    opt = {
+        'num_thread': args.num_thread,
     }
 
-    response = ollama.chat(model=model_name,
-                             messages=messages,
-                             think=think,
-                             options=options)
+    response = ollama.chat(model=args.model_name,
+                             messages=msg,
+                             think=args.think,
+                             options=opt)
     return response.message
 
-def translate_one_file(args, in_file_name, w):
-    checkpoint_time = time.time()
 
-    # 入力文書を文単位で区切って、2048文字程度の文の束に分割。
-    # q_text_list: the list of original text sentences.
+# 数十分の1の確率で全文がthinkタグで囲まれたcontentが出る異常が発生。この場合翻訳処理をリトライする。
+def tranlation_with_retry(in_text, args):
+    for i in range(args.retry_count + 1):
+        resp_msg = perform_translation(in_text, args)
+
+        resp_content = resp_msg.content
+
+        # resp_content内に</think>が現れるとき、先頭から</think>までを削除
+        think_tag="</think>"
+        match = re.search(think_tag, resp_content)
+        if match:
+            resp_content = resp_content[match.start()+len(think_tag):]
+        
+        if resp_content.strip():
+            break
+
+    # resp_msg.thinkingに think内容、
+    # resp_contentに、markdown書式の回答文が戻る。
+    # markdown → HTML変換。
+    content = markdown2.markdown(resp_content, extras=["tables"])
+
+    return resp_msg, content
+
+
+# 入力文書の句点を手掛かりにして文単位で区切り、1000文字程度の文の束に分割。
+def input_file_text_split(in_file_name, args):
     in_text_list = []
     with io.open(in_file_name, mode="r", encoding="utf-8") as r:
         # 1行づつ読み、1個の文字列whole_textに連結。
@@ -59,10 +83,18 @@ def translate_one_file(args, in_file_name, w):
         if 0 < len(in_text):
             in_text_list.append(in_text)
 
-    print(f" Inference begin. {in_file_name}")
+    return in_text_list
 
-    # 翻訳実行、結果をHTML形式で保存する。
-    i=0
+
+# テキストファイルin_file_nameの全文をargs.tgt_langに翻訳。結果をファイルに出力。
+def translate_one_file(args, in_file_name, w):
+    checkpoint_time = time.time()
+
+    in_text_list = input_file_text_split(in_file_name, args)
+
+    print(f"  Translation begin: {in_file_name}")
+
+    # HTMLのテーブルを出力。
 
     w.write('<table border="1" style="width: 100%">\n')
     w.write('  <colgroup>\n')
@@ -75,54 +107,47 @@ def translate_one_file(args, in_file_name, w):
         w.write('    <col span="1" style="width: 70%;">\n')
     w.write('  </colgroup>\n')
 
-    s = f"<tr><td>input text<br />{in_file_name}</td><td>{args.tgt_lang} translated text</td>"
+    # table columns定義。
+    w.write(f"<tr><td>input text<br />{in_file_name}</td><td>{args.tgt_lang} translated text</td>")
+
     if args.think:
-        s = s + "<td>thoughts</td></tr>\n"
-    else:
-        s = s + "\n"
-    w.write(s)
+        w.write("<td>thoughts</td></tr>\n")
+
+    w.write("\n")
 
     # table column begin/end tag, with span tag to keep line ending.
     tdBgn='<td><span style=\"white-space: pre-wrap;\">'
     tdEnd='</span></td>'
 
+    i=0
     for in_text in in_text_list:
-        resp_msg = query(in_text, args.model_name, args.tgt_lang, args.extra, args.think, args.num_thread)
-
-        resp_content = resp_msg.content
-
-        # resp_content内に</think>が現れるとき、先頭から</think>までを削除
-        think_tag="</think>"
-        match = re.search(think_tag, resp_content)
-        if match:
-            resp_content = resp_content[match.start()+len(think_tag):]
+        resp_msg, content = tranlation_with_retry(in_text, args)
 
         # 経過時間表示。
         now_time = time.time()
         elapsed_time = now_time - checkpoint_time
         checkpoint_time = now_time
-        print(f"  Translation {i} took {elapsed_time:.3f} sec.")
-
-        # resp_msg.thinkingに think内容、
-        # resp_contentに、markdown書式の回答文が戻る。
-        # markdown → HTML変換。
-        content = markdown2.markdown(resp_content, extras=["tables"])
+        print(f"    Translation {i} took {elapsed_time:.3f} sec.")
 
         # contentはHTML書式なのでspan不要。in_text, thinkingはspan必要。
         s = f'\n<tr  style="vertical-align:top">' + \
                   f'{tdBgn}{in_text}{tdEnd}' + \
                   f'<td>\n\n{content}'
+
         if args.think:
             s = s + f'\n\n</td>{tdBgn}{resp_msg.thinking}<br />Translation took {elapsed_time:.1f} seconds. {tdEnd}'
         else:
-            s = s + f'<br />Translation took {elapsed_time:.1f} seconds.</td>'
-        '</tr>\n'
+            s = s +                                    f'<br />Translation took {elapsed_time:.1f} seconds.</td>'
+
+        s = s + '</tr>\n'
+
         w.write(s)
         w.flush()
         i = i+1
         
     w.write("</table><br />\n\n")
     w.flush()
+
 
 def main():
     start_time = time.time()
@@ -136,6 +161,7 @@ def main():
     parser.add_argument("--q_text_limit",       help="Query text limit characters count.",        type=int, default=512)
     parser.add_argument("--num_thread",         help="Num of CPU worker thread.",                 type=int, default=16)
     parser.add_argument("--sentence_delimiter", help="Sentence delimiter.",                       type=str, default="。")
+    parser.add_argument("--retry_count",        help="Retry count.",                              type=int, default=1)
 
     parser.add_argument("--think",              help="Think enable (default).",                   action='store_true')
     parser.add_argument("--no-think", dest="think", help="Think disable.",                        action='store_false')

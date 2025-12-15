@@ -104,16 +104,16 @@ def translate_one_file(args, in_file_name, w):
         print(f"  Translation {i} took {elapsed_time:.3f} sec.")
 
         # resp_msg.thinkingに think内容、
-        # resp_msg.contentに、markdown書式の回答文が戻る。
+        # resp_contentに、markdown書式の回答文が戻る。
         # markdown → HTML変換。
-        content = markdown2.markdown(resp_msg.content, extras=["tables"])
+        content = markdown2.markdown(resp_content, extras=["tables"])
 
         # contentはHTML書式なのでspan不要。in_text, thinkingはspan必要。
         s = f'\n<tr  style="vertical-align:top">' + \
                   f'{tdBgn}{in_text}{tdEnd}' + \
-                  f'<td>{content}'
+                  f'<td>\n\n{content}'
         if args.think:
-            s = s + f'</td>{tdBgn}{resp_msg.thinking}<br />Translation took {elapsed_time:.1f} seconds. {tdEnd}'
+            s = s + f'\n\n</td>{tdBgn}{resp_msg.thinking}<br />Translation took {elapsed_time:.1f} seconds. {tdEnd}'
         else:
             s = s + f'<br />Translation took {elapsed_time:.1f} seconds.</td>'
         '</tr>\n'
@@ -121,7 +121,7 @@ def translate_one_file(args, in_file_name, w):
         w.flush()
         i = i+1
         
-    w.write("</table><br />\n")
+    w.write("</table><br />\n\n")
     w.flush()
 
 def main():

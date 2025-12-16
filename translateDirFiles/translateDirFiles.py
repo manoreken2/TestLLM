@@ -36,6 +36,9 @@ def perform_translation(in_text, args):
 # 数十分の1の確率で全文がthinkタグで囲まれたcontentが出る異常が発生。この場合翻訳処理をリトライする。
 def tranlation_with_retry(in_text, args):
     for i in range(args.retry_count + 1):
+        if 0 < i:
+            print("      Retrying translation.")
+
         resp_msg = perform_translation(in_text, args)
 
         resp_content = resp_msg.content
@@ -170,6 +173,14 @@ def main():
     args = parser.parse_args()
 
     with io.open(args.output_file, mode="w", encoding="utf-8") as w:
+        # HTML header
+        w.write('<html>\n')
+        w.write('<head>\n')
+        w.write('<meta charset="utf-8">\n')
+        w.write(f'<title>{args.tgt_lang} translation of {args.input_dir} with {args.model_name}</title>\n')
+        w.write('</head>\n')
+        w.write('<body>\n\n')
+
         w.write(f'Translator model: {args.model_name}<br />\n')
         for in_file in glob.glob(args.input_dir + '/*.txt'):
             translate_one_file(args, in_file, w)
@@ -177,6 +188,11 @@ def main():
         txt = f"Translation task took {(time.time() - start_time):.3f} sec."
         w.write(txt)
         print(txt)
+
+        # HTML footer
+        w.write('</body>')
+        w.write('</html>')
+
 
 if __name__ == "__main__":
     main()

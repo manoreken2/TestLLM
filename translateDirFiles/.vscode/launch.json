@@ -11,7 +11,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args":  [ "--input_dir=Le_Petit_Prince_by_Antoine_de_Saint-Exupéry", "--no-think", "--sentence_delimiter=.", "--tgt_lang=Modern Japanese", "--extra=Append comprehensive commentary section to help modern Japanese adult layperson to understand the meaning, rhyme, wordplay or other rhetorical techniques be used, reference to other literature, its historical and cultural background. It is excerpt from Le Petit Prince.", "--model_name=deepseek-r1:671b-0528-q8_0", "--output_file=Petit_Prince_q8.html" ]
+            "args":  [ "--input_dir=資治通鑑", "--no-think", "--tgt_lang=Modern Japanese", "--extra=Append commentary section. Never output rubi. It is excerpt from 資治通鑑.", "--model_name=deepseek-r1:671b-0528-q4_K_M", "--output_file=s_tang50_q4.html", "--num_thread=15" ]
         }
     ]
 }

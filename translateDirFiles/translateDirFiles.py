@@ -60,7 +60,7 @@ def tranlation_with_retry(in_text, args):
     return resp_msg, content
 
 
-# 入力文書の句点を手掛かりにして文単位で区切り、1000文字程度の文の束に分割。
+# 入力文書の改行、句点を手掛かりにして文単位で区切り、1000文字程度の文の束に分割。
 def input_file_text_split(in_file_name, args):
     in_text_list = []
     with io.open(in_file_name, mode="r", encoding="utf-8") as r:
@@ -72,13 +72,14 @@ def input_file_text_split(in_file_name, args):
         # ファイル最後の空行除去。
         whole_text = whole_text.strip('\r\n ')
 
-        # 句点で文字列を分割。規定文字数の文の束in_text_listを作成。
+        # 改行と句点で文字列を分割。規定文字数の文の束in_text_listを作成。
         in_text = ""
-        for t in whole_text.split(args.sentence_delimiter):
+
+        for t in re.split(fr"({args.sentence_delimiter}|\n)", whole_text):
                 if 0 == len(t):
                     # 最後に空文字列が来る。
                     continue
-                in_text += t + args.sentence_delimiter
+                in_text += t
                 if args.q_text_limit <= len(in_text):
                     in_text_list.append(in_text)
                     in_text = ""

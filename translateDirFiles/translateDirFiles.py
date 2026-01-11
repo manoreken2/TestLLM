@@ -49,7 +49,8 @@ def tranlation_with_retry(in_text, args):
         if match:
             resp_content = resp_content[match.start()+len(think_tag):]
         
-        if resp_content.strip():
+        if args.out_text_min_len <= len(resp_content.strip()):
+            # 訳出成功。
             break
 
     # resp_msg.thinkingに think内容、
@@ -165,10 +166,12 @@ def main():
     parser.add_argument("--q_text_limit",       help="Query text limit characters count.",        type=int, default=512)
     parser.add_argument("--num_thread",         help="Num of CPU worker thread.",                 type=int, default=16)
     parser.add_argument("--sentence_delimiter", help="Sentence delimiter.",                       type=str, default="。")
-    parser.add_argument("--retry_count",        help="Retry count.",                              type=int, default=1)
+    parser.add_argument("--retry_count",        help="Retry count.",                              type=int, default=4)
+    parser.add_argument("--out_text_min_len",   help="output text minimum len threshold.",        type=int, default=32)
 
     parser.add_argument("--think",              help="Think enable (default).",                   action='store_true')
     parser.add_argument("--no-think", dest="think", help="Think disable.",                        action='store_false')
+
     parser.set_defaults(think=True)
 
     args = parser.parse_args()

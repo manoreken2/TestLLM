@@ -35,9 +35,14 @@ def perform_translation(in_text, args):
 
 # 数十分の1の確率で全文がthinkタグで囲まれたcontentが出る異常が発生。この場合翻訳処理をリトライする。
 def tranlation_with_retry(in_text, args):
+
+    if len(in_text.strip()) < args.in_text_min_len:
+        # 入力文字列が短すぎるとき、訳出しない。
+        return "", "Input text is too short! Translation skipped."
+
     for i in range(args.retry_count + 1):
         if 0 < i:
-            print("      Retrying translation.")
+            print(f"      Retrying translation {i}/{args.retry_count}.")
 
         resp_msg = perform_translation(in_text, args)
 
@@ -58,7 +63,12 @@ def tranlation_with_retry(in_text, args):
     # markdown → HTML変換。
     content = markdown2.markdown(resp_content, extras=["tables"])
 
-    return resp_msg, content
+    # thinking文字列。
+    thinking = ""
+    if args.think:
+        thinking = resp_msg.thinking
+
+    return thinking, content
 
 
 # 入力文書の改行、句点を手掛かりにして文単位で区切り、1000文字程度の文の束に分割。
@@ -126,7 +136,8 @@ def translate_one_file(args, in_file_name, w):
 
     i=0
     for in_text in in_text_list:
-        resp_msg, content = tranlation_with_retry(in_text, args)
+
+        thinking, content = tranlation_with_retry(in_text, args)
 
         # 経過時間表示。
         now_time = time.time()
@@ -140,7 +151,7 @@ def translate_one_file(args, in_file_name, w):
                   f'<td>\n\n{content}'
 
         if args.think:
-            s = s + f'\n\n</td>{tdBgn}{resp_msg.thinking}<br />Translation took {elapsed_time:.1f} seconds. {tdEnd}'
+            s = s + f'\n\n</td>{tdBgn}{thinking}<br />Translation took {elapsed_time:.1f} seconds. {tdEnd}'
         else:
             s = s +                                    f'<br />Translation took {elapsed_time:.1f} seconds.</td>'
 
@@ -168,6 +179,7 @@ def main():
     parser.add_argument("--sentence_delimiter", help="Sentence delimiter.",                       type=str, default="。")
     parser.add_argument("--retry_count",        help="Retry count.",                              type=int, default=4)
     parser.add_argument("--out_text_min_len",   help="output text minimum len threshold.",        type=int, default=32)
+    parser.add_argument("--in_text_min_len",    help="input  text minimum len threshold.",        type=int, default=3)
 
     parser.add_argument("--think",              help="Think enable (default).",                   action='store_true')
     parser.add_argument("--no-think", dest="think", help="Think disable.",                        action='store_false')

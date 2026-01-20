@@ -2,9 +2,16 @@
 
 from scipy.optimize import fsolve
 
-def eq1(x,y=0,r=1):
+# x^2 + y^2 - r^2 = 0
+def circle_surface(x, y, r):
     return x * x + y * y - r * r
 
-solution = fsolve(eq1, 0.5, args=(0.5, 1) )
+# find x value satisfy circle equation: x^2 + 0.5^2 = 1 , starts from initial pos (0.5, 0.5)
+x_init = 0.5
+y = 0.5
+r = 1.0
+solution = fsolve(circle_surface, x_init, args=(y, r) )
 
-print(solution)
+x = solution[0]
+
+print(f"Solution (x, y) = ({x}, {y})")

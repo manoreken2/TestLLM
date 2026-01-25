@@ -57,7 +57,7 @@ def get_shortest_axis(d):
 def shortest_axis_xy(d):
     x = abs(d[0])
     y = abs(d[1])
-    if x > y:
+    if y < x:
         return Axis.Y
     else:
         return Axis.X
@@ -73,13 +73,13 @@ def another_axis_xy(axis):
         return Axis.X
 
 
-def get_longest_axis_xy(d):
+def longest_axis_xy(d):
     x = abs(d[0])
     y = abs(d[1])
     if y < x:
-        return Axis.Y
-    else:
         return Axis.X
+    else:
+        return Axis.Y
 
 
 class create_surface_ply:
@@ -186,16 +186,24 @@ class create_surface_ply:
         p0 = self.find_surface_point(p_init, ax1, ax2)
         return p0
 
-    def next_surface_point_xy(self, p, d, d_length):
+    def next_surface_point(self, p, d, d_length, adj_axis):
         ratio = 1.0
         while 0.2 < ratio:
             pa = p + d_length * ratio * (d / np.linalg.norm(d))
-            p1 = self.solve_eq(shortest_axis_xy(d), pa)
+            p1 = self.solve_eq(adj_axis, pa)
             if self.point_on_the_surface(p1):
                 return p1
             # 半分の移動量にしてリトライする
             ratio = ratio / 2.0
         return p1
+
+    def next_surface_point_dxy(self, p, d, d_length):
+        adj_axis = shortest_axis_xy(d)
+        return self.next_surface_point(p, d, d_length, adj_axis)
+
+    def next_surface_point_dz(self, p, d, d_length):
+        adj_axis = longest_axis_xy(d)
+        return self.next_surface_point(p, d, d_length, adj_axis)
 
     # xy方向に移動していって、1周するまで点を追加。
     def gather_points_xy(self, p_init, d_init, dxy_length, z_stop):
@@ -210,7 +218,7 @@ class create_surface_ply:
             return False
 
         # 次の点p1は、p0からd_initの方向に移動して見つける。
-        p1 = self.next_surface_point_xy(p0, d_init, dxy_length)
+        p1 = self.next_surface_point_dxy(p0, d_init, dxy_length)
         if not self.validate_and_store(p1):
             print(f"Point found is not on the surface. p1={p1}")
             return False
@@ -227,7 +235,7 @@ class create_surface_ply:
         while True:
             # 次の点pnextは、pcurからpcur - pprevの方向に、d_lengthだけ移動したあたりにある。
             d_xy = pcur - pprev
-            pnext = self.next_surface_point_xy(pcur, d_xy, dxy_length)
+            pnext = self.next_surface_point_dxy(pcur, d_xy, dxy_length)
             if not self.validate_and_store(pnext):
                 print(f"Point found is not on the surface. pnext={pnext}")
                 return False
@@ -240,7 +248,7 @@ class create_surface_ply:
                 print(f"Loop formed. {pnext} {p0}")
                 return True
 
-            print(f"{len(self.plist)}: pnext={pnext} d_xy={d_xy}")
+            # print(f"{len(self.plist)}: pnext={pnext} d_xy={d_xy}")
 
             pprev = pcur
             pcur = pnext
@@ -253,16 +261,19 @@ class create_surface_ply:
         self.point_regist_thr = self.point_regist_k * dxy_length
 
         p0 = self.determine_surface_point_xy(pinit, dxy_dir)
-        p1z = self.next_surface_point_xy(p0, dz_dir, dz_length)
+        p1z = self.next_surface_point_dz(p0, dz_dir, dz_length)
 
         dz = p1z - p0
 
         while self.gather_points_xy(p0, dxy_dir, dxy_length, z_stop):
-            # dz方向に移動後、dzの最短軸方向に微調整する。
-            p1z = self.next_surface_point_xy(p0, dz, dz_length)
+            # dz方向に移動後、dzの最長軸方向に微調整する。
+            p1z = self.next_surface_point_dz(p0, dz, dz_length)
+            print(f"Move z direction: p0={p0} dz={dz} p1z={p1z}")
 
             if self.points_too_close(p0, p1z, self.stopthr):
-                print(f"Move z direction failed. dz={dz}")
+                print(
+                    f"Move z direction failed. dz={dz} p0={p0} p1z={p1z} stopthr={self.stopthr}"
+                )
                 break
             dz = p1z - p0
             p0 = p1z

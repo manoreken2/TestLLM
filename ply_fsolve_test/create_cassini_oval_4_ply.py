@@ -8,10 +8,10 @@ def eq_eval(x, y, z, coeffs):
     return (
         b
         - c * z
-        - ((x - a) * (x - a) + (y - a) * (y - a))
-        * ((x + a) * (x + a) + (y - a) * (y - a))
-        * ((x - a) * (x - a) + (y + a) * (y + a))
-        * ((x + a) * (x + a) + (y + a) * (y + a))
+        - ((x - a) ** 2 + (y - a) ** 2)
+        * ((x + a) ** 2 + (y - a) ** 2)
+        * ((x - a) ** 2 + (y + a) ** 2)
+        * ((x + a) ** 2 + (y + a) ** 2)
     )
 
 

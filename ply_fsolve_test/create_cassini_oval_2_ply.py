@@ -3,7 +3,7 @@ from create_surface_ply import create_surface_ply
 import numpy as np
 
 
-# cassini oval 2の方程式
+# Cassini oval 2の方程式
 def eq_eval(x, y, z, coeffs):
     a, b, c = coeffs
     return b - c * z - ((x - a) ** 2 + y**2) * ((x + a) ** 2 + y**2)

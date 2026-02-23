@@ -3,7 +3,7 @@ Qwen RAG program to parse pdf and answer the user query.
 
 # Setup
 
-Install Miniforge. then type 
+Install Miniforge. Then type on Miniforge Prompt
 ```
 conda create -n LCrag -y python=3.11
 conda activate LCrag
@@ -12,11 +12,19 @@ pip install transformers langchain faiss-cpu peft sentence-transformers unstruct
 
 # Run
 
-
-Program runs on CPU not GPU
+40GB memory is used.
+Typically program runs on CPU not GPU.
 
 ```
+# Ubuntu 24.04
 export CUDA_VISIBLE_DEVICES=""
+
+# Windows
+set CUDA_VISIBLE_DEVICES=""
+```
+
+
+```
 conda activate LCrag
 python run.py -pdf "saiyuuki.pdf" -q "How 悟空 flies? Does he use some equipment to fly?"
 ```
@@ -24,6 +32,7 @@ python run.py -pdf "saiyuuki.pdf" -q "How 悟空 flies? Does he use some equipme
 # Environment tested
 
 ```
+Ubuntu 24.04
 pip list
 Package                  Version
 ------------------------ ---------

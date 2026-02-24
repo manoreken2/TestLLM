@@ -8,24 +8,22 @@
 # python run.py
 
 
-# https://qwen3lm.com/qwen3-langchain-rag/#install
-
-
 def run(args):
+    # https://qwen3lm.com/qwen3-langchain-rag/#install
     # 2
     from transformers import AutoTokenizer, AutoModelForCausalLM
 
     tokenizer = AutoTokenizer.from_pretrained(
-        "Qwen/Qwen1.5-14B", trust_remote_code=True
+        args.tokenizer, trust_remote_code=True
     )
     model = AutoModelForCausalLM.from_pretrained(
-        "Qwen/Qwen1.5-14B", trust_remote_code=True, device_map="auto"
+        args.model, trust_remote_code=True, device_map="auto"
     )
 
     # 3
     from langchain_huggingface import HuggingFaceEmbeddings
 
-    embedding_model = HuggingFaceEmbeddings(model_name="BAAI/bge-base-en-v1.5")
+    embedding_model = HuggingFaceEmbeddings(model_name=args.embeddings)
 
     # 4
     from langchain_community.document_loaders import TextLoader
@@ -92,13 +90,31 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-inTxt", type=str, default="saiyuuki.txt", help="input txt file name"
+        "-inTxt", type=str, default="../document/saiyuuki.txt", help="input txt file name"
     )
     parser.add_argument(
         "-q",
         type=str,
         default="How 悟空 flies? Does he use some equipment to fly?",
         help="query string to ask",
+    )
+    parser.add_argument(
+        "-tokenizer",
+        type=str,
+        default="Qwen/Qwen1.5-14B",
+        help="AutoTokenizer pretrined",
+    )
+    parser.add_argument(
+        "-model",
+        type=str,
+        default="Qwen/Qwen1.5-14B",
+        help="AutoModelForCausalLM pretrained",
+    )
+    parser.add_argument(
+        "-embeddings",
+        type=str,
+        default="BAAI/bge-base-en-v1.5",
+        help="HuggingFaceEmbeddings model",
     )
 
     args = parser.parse_args()

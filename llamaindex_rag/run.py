@@ -1,4 +1,4 @@
-'''
+"""
 https://qwen.readthedocs.io/en/latest/framework/LlamaIndex.html
 
 conda create -y -n Lidx python=3.11
@@ -8,7 +8,7 @@ pip install llama-index-llms-huggingface
 pip install llama-index-readers-web
 pip install llama-index-embeddings-huggingface
 
-'''
+"""
 
 import torch
 from llama_index.core import Settings
@@ -19,8 +19,10 @@ from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 # Set prompt template for generation (optional)
 from llama_index.core import PromptTemplate
 
+
 def completion_to_prompt(completion):
-   return f"<|im_start|>system\n<|im_end|>\n<|im_start|>user\n{completion}<|im_end|>\n<|im_start|>assistant\n"
+    return f"<|im_start|>system\n<|im_end|>\n<|im_start|>user\n{completion}<|im_end|>\n<|im_start|>assistant\n"
+
 
 def messages_to_prompt(messages):
     prompt = ""
@@ -39,13 +41,18 @@ def messages_to_prompt(messages):
 
     return prompt
 
+
 # Set Qwen2.5 as the language model and set generation config
 Settings.llm = HuggingFaceLLM(
-    model_name="Qwen/Qwen3-235B-A22B-Instruct-2507", # "Qwen/Qwen2.5-7B-Instruct",
-    tokenizer_name="Qwen/Qwen3-235B-A22B-Instruct-2507", # "Qwen/Qwen2.5-7B-Instruct",
+    model_name="Qwen/Qwen3-235B-A22B-Instruct-2507",  # "Qwen/Qwen2.5-7B-Instruct",
+    tokenizer_name="Qwen/Qwen3-235B-A22B-Instruct-2507",  # "Qwen/Qwen2.5-7B-Instruct",
     context_window=30000,
     max_new_tokens=2000,
-    generate_kwargs={"temperature": 0.7, "top_k": 20, "top_p": 0.8}, # {"temperature": 0.7, "top_k": 50, "top_p": 0.95},
+    generate_kwargs={
+        "temperature": 0.7,
+        "top_k": 20,
+        "top_p": 0.8,
+    },  # {"temperature": 0.7, "top_k": 50, "top_p": 0.95},
     messages_to_prompt=messages_to_prompt,
     completion_to_prompt=completion_to_prompt,
     device_map="auto",
@@ -53,7 +60,7 @@ Settings.llm = HuggingFaceLLM(
 
 # Set embedding model
 Settings.embed_model = HuggingFaceEmbedding(
-    model_name = "BAAI/bge-base-en-v1.5"
+    model_name="BAAI/bge-multilingual-gemma2"  # "BAAI/bge-base-en-v1.5"
 )
 
 # Set the size of the text chunk for retrieval
@@ -65,10 +72,9 @@ documents = SimpleDirectoryReader(input_files=["../document/saiyuuki.txt"]).load
 index = VectorStoreIndex.from_documents(
     documents,
     embed_model=Settings.embed_model,
-    transformations=Settings.transformations
+    transformations=Settings.transformations,
 )
 
 query_engine = index.as_query_engine()
-your_query = "How 悟空 flies? Does he use some equipment to fly?"
+your_query = "悟空の飛行方法を教えてください。道具を使用して飛行しますか？"
 print(query_engine.query(your_query).response)
-

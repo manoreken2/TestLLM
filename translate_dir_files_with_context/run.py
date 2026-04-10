@@ -116,7 +116,12 @@ def input_file_text_split(in_file_name, args):
         t1 = in_text_list[i + 1]
         if t1[0] == args.sentence_delimiter:
             in_text_list[i] = t0 + args.sentence_delimiter
-            in_text_list[i + 1] = t1[1:]
+            in_text_list[i+1] = t1[1:]
+
+    # 先頭や末尾の改行除去。
+    for i in range(len(in_text_list)):
+        t = in_text_list[i]
+        in_text_list[i] = t.strip()
 
     return in_text_list
 

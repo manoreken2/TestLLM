@@ -7,8 +7,6 @@ import markdown2
 import re
 import datetime
 
-# 入力文字列in_textをargs.tgt_langに翻訳。
-
 
 def perform_translation(chat_engine, in_text, args):
     prompt = args.prompt.format(tgt_lang=args.tgt_lang, in_text=in_text)

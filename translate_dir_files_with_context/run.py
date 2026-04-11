@@ -5,6 +5,7 @@ import time
 import glob
 import markdown2
 import re
+import datetime
 
 # 入力文字列in_textをargs.tgt_langに翻訳。
 
@@ -53,7 +54,9 @@ def tranlation_with_retry(chat_engine, in_text, args):
 
     for i in range(args.retry_count + 1):
         if 0 < i:
-            print(f"      Retrying translation {i}/{args.retry_count}.")
+            print(
+                f"      {datetime.datetime.now()} Retrying translation {i}/{args.retry_count}."
+            )
 
         resp_msg = perform_translation(chat_engine, in_text, args)
         resp_content = resp_msg.response
@@ -116,7 +119,7 @@ def input_file_text_split(in_file_name, args):
         t1 = in_text_list[i + 1]
         if t1[0] == args.sentence_delimiter:
             in_text_list[i] = t0 + args.sentence_delimiter
-            in_text_list[i+1] = t1[1:]
+            in_text_list[i + 1] = t1[1:]
 
     # 先頭や末尾の改行除去。
     for i in range(len(in_text_list)):
@@ -131,7 +134,7 @@ def translate_one_file(chat_engine, args, in_file_name, w):
     checkpoint_time = time.time()
     in_text_list = input_file_text_split(in_file_name, args)
 
-    print(f"  Translation begin: {in_file_name}")
+    print(f"  {datetime.datetime.now()} Translation begin: {in_file_name}")
 
     # HTMLのテーブルを出力。
     w.write('<table border="1" style="width: 100%">\n')
@@ -274,9 +277,7 @@ def main():
         w.write("<html>\n")
         w.write("<head>\n")
         w.write('<meta charset="utf-8">\n')
-        w.write(
-            f"<title>{args.tgt_lang} translation of {args.input_dir} with {args.model_name}</title>\n"
-        )
+        w.write(f"<title>{args.tgt_lang} {args.input_dir} {args.model_name}</title>\n")
         w.write("</head>\n")
         w.write("<body>\n\n")
 

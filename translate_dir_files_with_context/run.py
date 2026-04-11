@@ -170,7 +170,7 @@ def translate_one_file(chat_engine, args, in_file_name, w):
         now_time = time.time()
         elapsed_time = now_time - checkpoint_time
         checkpoint_time = now_time
-        print(f"    Translation {i} took {elapsed_time:.3f} sec.")
+        print(f"    {datetime.datetime.now()} Translation {i} took {elapsed_time:.3f} sec.")
 
         # contentはHTML書式なのでspan不要。in_text, thinkingはspan必要。
         s = (

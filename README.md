@@ -2,6 +2,9 @@
 
 ## 出力例
 
+史記 日本語訳 (WIP)
+https://manoreken2.github.io/TestLLM/translate_dir_files_with_context/史記_日本語訳.html
+
 資治通鑑 日本語訳
 https://manoreken2.github.io/TestLLM/translateDirFiles/資治通鑑_日本語訳.html
 

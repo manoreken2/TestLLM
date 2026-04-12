@@ -38,8 +38,8 @@ Batch translates all text files on the specified folder.
 Translation output example:
 
 Test input data 史記 download from project gutenberg
- https://github.com/manoreken2/TestLLM/tree/main/translate_dir_files_with_context/shiji
+ https://github.com/manoreken2/TestLLM/tree/main/translate_dir_files_with_context/史記
 
-史記 batch translation output
- https://manoreken2.github.io/TestLLM/translate_dir_files_with_context/shiji.html
+史記 batch translation output (五帝本紀～周本紀)
+ https://manoreken2.github.io/TestLLM/translate_dir_files_with_context/史記_日本語訳.html
 

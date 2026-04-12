@@ -20,7 +20,6 @@ def build_chat_engine(args):
     llm = Ollama(
         model=args.model_name,
         request_timeout=86400,
-        num_thread=args.num_thread,
         context_window=args.context_window,
     )
 
@@ -168,7 +167,9 @@ def translate_one_file(chat_engine, args, in_file_name, w):
         now_time = time.time()
         elapsed_time = now_time - checkpoint_time
         checkpoint_time = now_time
-        print(f"    {datetime.datetime.now()} Translation {i} took {elapsed_time:.3f} sec.")
+        print(
+            f"    {datetime.datetime.now()} Translation {i} took {elapsed_time:.3f} sec."
+        )
 
         # contentはHTML書式なのでspan不要。in_text, thinkingはspan必要。
         s = (
@@ -228,9 +229,6 @@ def main():
         help="original text split characters count.",
         type=int,
         default=512,
-    )
-    parser.add_argument(
-        "--num_thread", help="Num of CPU worker thread.", type=int, default=15
     )
     parser.add_argument(
         "--sentence_delimiter", help="Sentence delimiter.", type=str, default="。"

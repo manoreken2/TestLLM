@@ -2,6 +2,9 @@
 
 ## 出力例
 
+太平記 日本語訳 (WIP)
+https://manoreken2.github.io/TestLLM/translate_dir_files_with_context/太平記_日本語訳.html
+
 史記 日本語訳 (WIP)
 https://manoreken2.github.io/TestLLM/translate_dir_files_with_context/史記_日本語訳.html
 
@@ -19,3 +22,4 @@ https://manoreken2.github.io/TestLLM/translateLongTxt/test/Strindberg_Legenden_J
 
 Le Petit Prince 日本語訳
 https://manoreken2.github.io/TestLLM/translateDirFiles/Le_Petit_Prince_日本語訳/index.html
+

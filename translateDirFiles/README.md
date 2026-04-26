@@ -34,12 +34,12 @@ Translate all files on specified directory.
 
 Batch translates all text files on the specified folder.
 
-        python translateDirFiles.py --input_dir=sikyou --tgt_lang=`Modern Japanese with commentary` --model_name=DeepSeek-R1:671b-0528-q4_K_M --output_file=sikyou_translated.html
+        python translateDirFiles.py --input_dir=../document/詩経 --tgt_lang=`Modern Japanese with commentary` --model_name=DeepSeek-R1:671b-0528-q4_K_M --output_file=sikyou_translated.html
 
 Translation output example:
 
 Test input data 詩経
- https://github.com/manoreken2/TestLLM/tree/main/translateDirFiles/sikyou
+ https://github.com/manoreken2/TestLLM/tree/main/document/詩経
 
 詩経 batch translation output
  https://manoreken2.github.io/TestLLM/translateDirFiles/sikyou_671b_0528_q4.html

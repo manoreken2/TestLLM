@@ -1,6 +1,6 @@
-## Setup
+# Setup
 
-Tested on Windows PC
+## Windows PC
 
 install Minforge https://github.com/conda-forge/miniforge
 
@@ -9,8 +9,20 @@ install Minforge https://github.com/conda-forge/miniforge
 conda create -y -n Lidx python=3.11
 conda activate Lidx
 conda install pip
-pip install triton-windows==3.6.0.post26 llama-index llama-index-llms-huggingface llama-index-readers-web llama-index-embeddings-huggingface notebook ipywidgets widgetsnbextension pandas-profiling hf_xet qdrant_client transformers llama-index-llms-ollama torch==2.10.0+cu128 torchvision --index-url https://download.pytorch.org/whl/cu128
+pip install torch==2.10.0+cu128 torchvision --index-url https://download.pytorch.org/whl/cu128
+pip install triton-windows==3.6.0.post26 llama-index llama-index-llms-huggingface llama-index-readers-web llama-index-embeddings-huggingface notebook ipywidgets widgetsnbextension pandas-profiling hf_xet qdrant_client transformers llama-index-llms-ollama 
 
+```
+
+## Ubuntu 24.04
+
+install Miniforge for Linux x86-64
+```
+conda create -y -n Lidx python=3.11
+conda activate Lidx
+conda install pip
+pip install torch==2.10.0+cu128 torchvision --index-url https://download.pytorch.org/whl/cu128
+pip install triton llama-index llama-index-llms-huggingface llama-index-readers-web llama-index-embeddings-huggingface notebook ipywidgets widgetsnbextension pandas-profiling hf_xet qdrant_client transformers llama-index-llms-ollama
 ```
 
 ## Run

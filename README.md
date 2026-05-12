@@ -7,5 +7,5 @@ https://manoreken2.github.io/TestLLM/
 
 ## 原文置き場
 
-https://github.com/manoreken2/TestLLM/document
+https://github.com/manoreken2/TestLLM/tree/main/document
 

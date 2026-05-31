@@ -132,7 +132,7 @@ conda install pip
 pip install IPython ipywidgets notebook
 ```
 チャットプログラムのダウンロード、実行。
-サーバーを実行したPCと同じPC上で実行する場合Run.ipynbは無変更で動作します。別のPCで動かすときRun.ipynbのIPアドレスを変更して動かして下さい。
+サーバーを実行したPCと同じPC上で実行する場合ipynbは無変更で動作します。別のPCで動かすときipynbのIPアドレスを変更して動かして下さい。
 
 出力が異常の場合、jupyter kernelをrestartしてチャットプログラムを再実行して下さい。
 

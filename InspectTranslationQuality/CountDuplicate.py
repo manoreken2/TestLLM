@@ -22,7 +22,7 @@ def run(args):
             translated_txt = lines[i + 1]
             txt_bgn = translated_txt[: args.compare_char_count]
             if prev_txt_bgn == txt_bgn:
-                print(f"    possible duplicate {txt_bgn}")
+                print(f"    line {i+1} : possible duplicate {txt_bgn}")
                 dup += 1
             prev_txt_bgn = txt_bgn
 

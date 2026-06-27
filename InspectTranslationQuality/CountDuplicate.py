@@ -20,7 +20,7 @@ def run(args):
             trans_cnt += 1
 
             translated_txt = lines[i + 1]
-            txt_bgn = translated_txt[: args.print_char_count]
+            txt_bgn = translated_txt[: args.compare_char_count]
             if prev_txt_bgn == txt_bgn:
                 print(f"    possible duplicate {txt_bgn}")
                 dup += 1
@@ -35,7 +35,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("input_html_path", type=str, help="input html path")
     parser.add_argument(
-        "--print_char_count", type=int, default=25, help="print characters count"
+        "--compare_char_count", type=int, default=25, help="compare characters count"
     )
     args = parser.parse_args()
 

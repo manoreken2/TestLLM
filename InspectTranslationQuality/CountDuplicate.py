@@ -1,0 +1,42 @@
+import argparse
+
+
+def run(args):
+    lines = []
+    with open(args.input_html_path, encoding="utf-8") as f:
+        for line in f:
+            s = line.strip()
+            # 空行を除去
+            if 3 < len(s):
+                lines.append(s)
+
+    trans_cnt = 0
+    dup = 0
+    prev_txt_bgn = ""
+
+    for i in range(len(lines)):
+        line = lines[i]
+        if i < len(lines) - 1 and "</span></td><td>" in line:
+            trans_cnt += 1
+
+            translated_txt = lines[i + 1]
+            txt_bgn = translated_txt[: args.print_char_count]
+            if prev_txt_bgn == txt_bgn:
+                print(f"    possible duplicate {txt_bgn}")
+                dup += 1
+            prev_txt_bgn = txt_bgn
+
+    print(
+        f'"{args.input_html_path}" translation_coun {trans_cnt}, possible_duplicate {dup}'
+    )
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("input_html_path", type=str, help="input html path")
+    parser.add_argument(
+        "--print_char_count", type=int, default=25, help="print characters count"
+    )
+    args = parser.parse_args()
+
+    run(args)

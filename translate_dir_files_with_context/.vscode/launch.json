@@ -1,0 +1,17 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "name": "Python Debugger: Current File with Arguments",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args":  [ "--input_dir=../document/Dante_La_Divina_Comedia", "--no-think",  "--model_name=deepseek-r1:671b-0528-q8_0_11cpu", "--paragraph_separate=True", "--output_file=s_dante_ds6710528q8.html", "--extra_prompt=解説には文学的修辞技法、著者との関係、執筆当時の時代背景、古代ギリシャ・ローマ・聖書(書名 章:節) 等の西洋の古典からの引用、後世への影響があれば書いてください。"]
+        }
+    ]
+}

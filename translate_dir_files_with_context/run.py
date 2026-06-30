@@ -9,7 +9,7 @@ import datetime
 
 
 def perform_translation(chat_engine, in_text, args):
-    prompt = args.prompt.format(tgt_lang=args.tgt_lang, in_text=in_text)
+    prompt = args.prompt.format(tgt_lang=args.tgt_lang, in_text=in_text, extra_prompt=args.extra_prompt)
     response = chat_engine.chat(prompt)
     return response
 
@@ -162,7 +162,6 @@ def input_file_text_split_paragraph(in_file_name, args):
         t = t.strip('\n')
         t = t + '\n\n'
         in_text_list[i] = t
-        print(t)
 
     return in_text_list
 
@@ -308,11 +307,12 @@ def main():
     parser.add_argument(
         "--no-think", dest="think", help="Think disable.", action="store_false"
     )
+    parser.add_argument("--extra_prompt", help="Extra prompt to append", type=str, default="")
     parser.add_argument(
         "--prompt",
         help="prompt text.",
         type=str,
-        default="以下のtriplequoteで囲まれた文を全文{tgt_lang}に翻訳してください。原文を出力しないでください。原文内容を省略せず全て翻訳してください。翻訳文の後に解説を付けてください。ルビを出力しないでください。これは前の文の続きです。 ```{in_text}``` ",
+        default="以下のtriplequoteで囲まれた文を全文{tgt_lang}に翻訳してください。原文を出力しないでください。原文内容を省略せず全て翻訳してください。翻訳文の後に解説を付けてください。{extra_prompt}これは前の文の続きです。 ```{in_text}``` ",
     )
 
     parser.set_defaults(think=True)

@@ -45,3 +45,6 @@ Test input data 史記 download from project gutenberg
 
 太平記 日本語訳
  https://manoreken2.github.io/TestLLM/translate_dir_files_with_context/太平記_日本語訳.html
+ 
+ダンテ 神曲 日本語訳
+ https://manoreken2.github.io/TestLLM/translate_dir_files_with_context/ダンテ_神曲_日本語訳.html

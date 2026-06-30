@@ -82,7 +82,7 @@ def tranlation_with_retry(chat_engine, in_text, args):
 
 
 # 入力文書の改行、句点を手掛かりにして文単位で区切り、1000文字程度の文の束に分割。
-def input_file_text_split(in_file_name, args):
+def input_file_text_split_delimiter(in_file_name, args):
     in_text_list = []
 
     with io.open(in_file_name, mode="r", encoding="utf-8") as r:
@@ -126,10 +126,56 @@ def input_file_text_split(in_file_name, args):
     return in_text_list
 
 
+# 段落で文字列を区切る
+def input_file_text_split_paragraph(in_file_name, args):
+    in_text_list = []
+
+    with io.open(in_file_name, mode="r", encoding="utf-8") as r:
+        # 1行づつ読み、1個の文字列whole_textに連結。
+        whole_text = ""
+        for line in r.readlines():
+            whole_text += line.strip() + "\n"
+
+        # ファイル最後の空行除去。
+        whole_text = whole_text.strip("\r\n ")
+
+        # 改行が2つ連続する箇所で文字列を分割。規定文字数の文の束in_text_listを作成。
+        in_text = ""
+        for t in re.split(rf"(\n\n)", whole_text):
+            if 0 == len(t):
+                # 最後に空文字列が来る。
+                continue
+
+            in_text += t
+            if args.orig_text_split <= len(in_text):
+                in_text_list.append(in_text)
+                in_text = ""
+
+        # 最後に余った文字列。
+        in_text = in_text.strip()
+        if 0 < len(in_text):
+            in_text_list.append(in_text)
+
+    # 先頭や末尾の改行除去。
+    for i in range(len(in_text_list)):
+        t = in_text_list[i]
+        t = t.strip('\n')
+        t = t + '\n\n'
+        in_text_list[i] = t
+        print(t)
+
+    return in_text_list
+
+
 # テキストファイルin_file_nameの全文をargs.tgt_langに翻訳。結果をファイルに出力。
 def translate_one_file(chat_engine, args, in_file_name, w):
     checkpoint_time = time.time()
-    in_text_list = input_file_text_split(in_file_name, args)
+
+    in_text_list = []
+    if args.paragraph_separate:
+        in_text_list = input_file_text_split_paragraph(in_file_name, args)
+    else:
+        in_text_list = input_file_text_split_delimiter(in_file_name, args)
 
     print(f"  {datetime.datetime.now()} Translation begin: {in_file_name}")
 
@@ -232,6 +278,12 @@ def main():
     )
     parser.add_argument(
         "--sentence_delimiter", help="Sentence delimiter.", type=str, default="。"
+    )
+    parser.add_argument(
+        "--paragraph_separate",
+        help="Paragraph separate mode.",
+        type=bool,
+        default=False,
     )
     parser.add_argument("--retry_count", help="Retry count.", type=int, default=4)
     parser.add_argument(

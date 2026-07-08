@@ -282,7 +282,7 @@ def main():
         "--paragraph_separate",
         help="Paragraph separate mode.",
         type=bool,
-        default=False,
+        default=True,
     )
     parser.add_argument("--retry_count", help="Retry count.", type=int, default=4)
     parser.add_argument(

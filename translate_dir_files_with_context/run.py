@@ -1,4 +1,5 @@
-from pathlib import Path
+# see readme.md to setup
+
 import argparse
 import io
 import time
@@ -9,19 +10,42 @@ import datetime
 
 
 def perform_translation(chat_engine, in_text, args):
-    prompt = args.prompt.format(tgt_lang=args.tgt_lang, in_text=in_text, extra_prompt=args.extra_prompt)
+    prompt = args.prompt.format(
+        tgt_lang=args.tgt_lang, in_text=in_text, extra_prompt=args.extra_prompt
+    )
     response = chat_engine.chat(prompt)
     return response
 
 
 def build_chat_engine(args):
-    from llama_index.llms.ollama import Ollama
+    from llama_index.llms.openai_like import OpenAILike
 
-    llm = Ollama(
-        model=args.model_name,
-        request_timeout=86400,
-        context_window=args.context_window,
-    )
+    timeout = 86400
+
+    if args.think:
+        llm = OpenAILike(
+            model=args.model_name,
+            api_base=args.server_url,
+            api_key=args.server_api_key,
+            cotext_window=args.context_window,
+            is_chat_model=True,
+            is_function_calling_model=False,
+            timeout=timeout,
+        )
+    else:
+        # no-think
+        llm = OpenAILike(
+            model=args.model_name,
+            api_base=args.server_url,
+            api_key=args.server_api_key,
+            cotext_window=args.context_window,
+            is_chat_model=True,
+            is_function_calling_model=False,
+            timeout=timeout,
+            additional_kwargs={
+                "extra_body": {"chat_template_kwargs": {"enable_thinking": False}}
+            },
+        )
 
     from llama_index.core.storage.chat_store import SimpleChatStore
 
@@ -159,8 +183,8 @@ def input_file_text_split_paragraph(in_file_name, args):
     # 先頭や末尾の改行除去。
     for i in range(len(in_text_list)):
         t = in_text_list[i]
-        t = t.strip('\n')
-        t = t + '\n\n'
+        t = t.strip("\n")
+        t = t + "\n\n"
         in_text_list[i] = t
 
     return in_text_list
@@ -282,7 +306,7 @@ def main():
         "--paragraph_separate",
         help="Paragraph separate mode.",
         type=bool,
-        default=True,
+        default=False,
     )
     parser.add_argument("--retry_count", help="Retry count.", type=int, default=4)
     parser.add_argument(
@@ -301,19 +325,29 @@ def main():
         "--system_prompt",
         help="system prompt message.",
         type=str,
-        default="あなたは常に正確に回答する日本語アシスタントです。",
+        default="あなたは利用者の質問に対して日本語で正確に回答するアシスタントです。",
     )
     parser.add_argument("--think", help="Think enable (default).", action="store_true")
     parser.add_argument(
         "--no-think", dest="think", help="Think disable.", action="store_false"
     )
-    parser.add_argument("--extra_prompt", help="Extra prompt to append", type=str, default="")
+    parser.add_argument(
+        "--extra_prompt", help="Extra prompt to append", type=str, default=""
+    )
     parser.add_argument(
         "--prompt",
         help="prompt text.",
         type=str,
         default="以下のtriplequoteで囲まれた文を全文{tgt_lang}に翻訳してください。原文を出力しないでください。原文内容を省略せず全て翻訳してください。翻訳文の後に解説を付けてください。{extra_prompt}これは前の文の続きです。 ```{in_text}``` ",
     )
+
+    parser.add_argument(
+        "--server_api_key",
+        help="llama-server api key specified on the server start",
+        default="a",
+    )
+
+    parser.add_argument("--server_url", type=str, default="http://127.0.0.1:8080/v1")
 
     parser.set_defaults(think=True)
     args = parser.parse_args()

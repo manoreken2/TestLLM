@@ -338,12 +338,14 @@ def main():
     parser.add_argument(
         "--no-think", dest="think", help="Think disable.", action="store_false"
     )
+    parser.set_defaults(think=True)
 
     parser.add_argument("--reset_chat_history", help="Reset chat history on the beginning of the file (default).", action="store_true")
 
     parser.add_argument(
         "--no_reset_chat_history", dest="reset_chat_history", help="Translate all texts without chat history reset.", action="store_false"
     )
+    parser.set_defaults(reset_chat_history=True)
 
     parser.add_argument(
         "--extra_prompt", help="Extra prompt to append", type=str, default=""
@@ -363,7 +365,6 @@ def main():
 
     parser.add_argument("--server_url", type=str, default="http://127.0.0.1:8080/v1")
 
-    parser.set_defaults(think=True)
     args = parser.parse_args()
 
     chat_engine = build_chat_engine(args)

@@ -16,6 +16,10 @@ def perform_translation(chat_engine, in_text, args):
     response = chat_engine.chat(prompt)
     return response
 
+def reset_chat_history(chat_engine):
+    from llama_index.core.memory import ChatMemoryBuffer
+    new_memory = ChatMemoryBuffer.from_defaults(token_limit=1500)
+    chat_engine.memory = new_memory
 
 def build_chat_engine(args):
     from llama_index.llms.openai_like import OpenAILike
@@ -194,6 +198,9 @@ def input_file_text_split_paragraph(in_file_name, args):
 def translate_one_file(chat_engine, args, in_file_name, w):
     checkpoint_time = time.time()
 
+    if args.reset_chat_history:
+        reset_chat_history(chat_engine)
+
     in_text_list = []
     if args.paragraph_separate:
         in_text_list = input_file_text_split_paragraph(in_file_name, args)
@@ -288,7 +295,7 @@ def main():
         default="qwen3:235b-a22b-thinking-2507-q4_K_M",
     )
     parser.add_argument(
-        "--context_window", help="Num of context tokens.", type=int, default=8192
+        "--context_window", help="Num of context tokens.", type=int, default=4096
     )
     parser.add_argument(
         "--tgt_lang", help="Target language name.", type=str, default="現代日本語"
@@ -331,6 +338,13 @@ def main():
     parser.add_argument(
         "--no-think", dest="think", help="Think disable.", action="store_false"
     )
+
+    parser.add_argument("--reset_chat_history", help="Reset chat history on the beginning of the file (default).", action="store_true")
+
+    parser.add_argument(
+        "--no_reset_chat_history", dest="reset_chat_history", help="Translate all texts without chat history reset.", action="store_false"
+    )
+
     parser.add_argument(
         "--extra_prompt", help="Extra prompt to append", type=str, default=""
     )

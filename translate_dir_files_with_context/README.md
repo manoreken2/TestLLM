@@ -116,5 +116,5 @@ Translate all files on specified directory.
 
     llama-cli -m C:/work/hf/DeepSeek-R1-0528-Q8_0.gguf -p "Hello. Please answer with OK only." --temp 1.0 --top-p 0.95 --min-p 0.01 -c 4096 -t 10
 
-    llama-server -m C:/work/hf/DeepSeek-R1-0528-Q8_0.gguf -c 4096 -t 10 --parallel 1 --host 0.0.0.0 --port 8080 --api-key "a" -b 32 -ub 32
+    llama-server -m C:/work/hf/DeepSeek-R1-0528-Q8_0.gguf -c 4096 -t 10 --parallel 1 --host 0.0.0.0 --port 8080 --api-key "a"
     ```

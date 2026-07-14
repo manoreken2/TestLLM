@@ -96,7 +96,7 @@ Translate all files on specified directory.
     ```
     cd /D c:\work\TestLLM\translate_dir_files_with_context
     conda activate Lidx2
-    python run.py --input_dir=../document/Dante_La_Divina_Comedia --no-think --model_name=GLM_5.2_Q6_XL --paragraph_separate=True --context_window=4096 --output_file=s_dante_GLM52q6.html --tgt_lang=現代日本語 --extra_prompt=これはダンテ「神曲」の一節です。解説に文学的修辞技法、執筆当時の時代背景、古代ギリシャ・ローマ・聖書（書名 章:節）等西洋の古典からの引用があれば書いてください。
+    python run.py --input_dir=../document/Dante_La_Divina_Comedia --no-think --model_name=GLM_5.2_Q6_XL --paragraph_separate=True --context_window=4096 --output_file=s_dante_GLM52q6.html --tgt_lang=現代日本語 --extra_prompt=これはダンテ「神曲」の一節です。解説に文学的修辞技法、執筆当時の時代背景、古代ギリシャ・ローマ・聖書（書名、章:節）等西洋の古典からの引用があれば書いてください。
     ```
 
     Program preprocess the input text files then connect the llama-server on the same PC and translate the document. 
@@ -116,5 +116,5 @@ Translate all files on specified directory.
 
     llama-cli -m C:/work/hf/DeepSeek-R1-0528-Q8_0.gguf -p "Hello. Please answer with OK only." --temp 1.0 --top-p 0.95 --min-p 0.01 -c 4096 -t 10
 
-    llama-server -m C:/work/hf/DeepSeek-R1-0528-Q8_0.gguf -c 4096 -t 10 --parallel 1 --host 0.0.0.0 --port 8080 --api-key "a"
+    llama-server -m C:/work/hf/DeepSeek-R1-0528-Q8_0.gguf -c 4096 -t 10 --parallel 1 --host 0.0.0.0 --port 8080 --api-key "a" -b 32 -ub 32
     ```

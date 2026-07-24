@@ -4,9 +4,9 @@ import argparse
 import io
 import time
 import glob
-import markdown2
 import re
 import datetime
+import markdown
 
 
 def perform_translation(chat_engine, in_text, args):
@@ -16,10 +16,13 @@ def perform_translation(chat_engine, in_text, args):
     response = chat_engine.chat(prompt)
     return response
 
+
 def reset_chat_history(chat_engine):
     from llama_index.core.memory import ChatMemoryBuffer
+
     new_memory = ChatMemoryBuffer.from_defaults(token_limit=1500)
     chat_engine.memory = new_memory
+
 
 def build_chat_engine(args):
     from llama_index.llms.openai_like import OpenAILike
@@ -34,6 +37,8 @@ def build_chat_engine(args):
             cotext_window=args.context_window,
             is_chat_model=True,
             is_function_calling_model=False,
+            parse_tools_calls=False,
+            reasoning_format=None,
             timeout=timeout,
         )
     else:
@@ -45,6 +50,8 @@ def build_chat_engine(args):
             cotext_window=args.context_window,
             is_chat_model=True,
             is_function_calling_model=False,
+            parse_tools_calls=False,
+            reasoning_format=None,
             timeout=timeout,
             additional_kwargs={
                 "extra_body": {"chat_template_kwargs": {"enable_thinking": False}}
@@ -69,6 +76,12 @@ def build_chat_engine(args):
     )
 
     return chat_engine
+
+
+def markdown_to_html(md_text):
+    return markdown.markdown(
+        md_text, extensions=["nl2br", "extra", "tables", "fenced_code"]
+    )
 
 
 # 数十分の1の確率で全文がthinkタグで囲まれたcontentが出る異常が発生。この場合翻訳処理をリトライする。
@@ -99,14 +112,14 @@ def tranlation_with_retry(chat_engine, in_text, args):
     # resp_msg.thinkingに think内容、
     # resp_contentに、markdown書式の回答文が戻る。
     # markdown → HTML変換。
-    content = markdown2.markdown(resp_content, extras=["tables"])
+    content_html = markdown_to_html(resp_content)
 
     # thinking文字列。
     thinking = ""
-    if args.think:
+    if args.think and (not args.discard_think):
         thinking = resp_msg.thinking
 
-    return thinking, content
+    return thinking, content_html
 
 
 # 入力文書の改行、句点を手掛かりにして文単位で区切り、1000文字程度の文の束に分割。
@@ -212,7 +225,7 @@ def translate_one_file(chat_engine, args, in_file_name, w):
     # HTMLのテーブルを出力。
     w.write('<table border="1" style="width: 100%">\n')
     w.write("  <colgroup>\n")
-    if args.think:
+    if args.think and (not args.discard_think):
         w.write('    <col span="1" style="width: 15%;">\n')
         w.write('    <col span="1" style="width: 70%;">\n')
         w.write('    <col span="1" style="width: 15%;">\n')
@@ -226,7 +239,7 @@ def translate_one_file(chat_engine, args, in_file_name, w):
     w.write(
         f"<tr><td>input text<br />{in_file_name}</td><td>{args.tgt_lang} translated text</td>"
     )
-    if args.think:
+    if args.think and (not args.discard_think):
         w.write("<td>thoughts</td></tr>\n")
 
     w.write("\n")
@@ -254,7 +267,7 @@ def translate_one_file(chat_engine, args, in_file_name, w):
             + f"<td>\n\n{content}"
         )
 
-        if args.think:
+        if args.think and (not args.discard_think):
             s = (
                 s
                 + f"\n\n</td>{tdSpanBgn}{thinking}<br />Translation took {elapsed_time:.1f} seconds. {tdSpanEnd}"
@@ -340,10 +353,21 @@ def main():
     )
     parser.set_defaults(think=True)
 
-    parser.add_argument("--reset_chat_history", help="Reset chat history on the beginning of the file (default).", action="store_true")
+    parser.add_argument(
+        "--discard-think", help="discard think text (default)", default=False
+    )
 
     parser.add_argument(
-        "--no_reset_chat_history", dest="reset_chat_history", help="Translate all texts without chat history reset.", action="store_false"
+        "--reset_chat_history",
+        help="Reset chat history on the beginning of the file (default).",
+        action="store_true",
+    )
+
+    parser.add_argument(
+        "--no_reset_chat_history",
+        dest="reset_chat_history",
+        help="Translate all texts without chat history reset.",
+        action="store_false",
     )
     parser.set_defaults(reset_chat_history=True)
 

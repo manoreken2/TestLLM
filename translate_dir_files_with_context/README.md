@@ -66,7 +66,7 @@ Translate all files on specified directory.
     Open CMD and type the following command.
 
     ```
-    llama-cli -m C:/work/hf/GLM-5.2-UD-Q6_K_XL.gguf -p "Hello. Please answer with OK only." --temp 1.0 --top-p 0.95 --min-p 0.01 -c 4096 -t 10 --reasoning-budget 0
+    llama-cli -m C:/work/hf/GLM-5.2-UD-Q6_K_XL.gguf -p "Hello. Please answer with OK only." --temp 1.0 --top-p 0.95 --min-p 0.01 -c 4096 -t 10 --reasoning off
     ```
 
 6. Start Llama server on your PC.
@@ -86,7 +86,7 @@ Translate all files on specified directory.
     conda create -y -n Lidx2 python=3.12
     conda activate Lidx2
     conda install pip
-    pip install llama-index llama-index-llms-openai-like openai pathlib markdown2
+    pip install llama-index llama-index-llms-openai-like openai pathlib markdown
     ```
 
 8. Start translation program on the same PC
@@ -103,18 +103,36 @@ Translate all files on specified directory.
 
 ## How to use DeepSeek-R1:671b-0528
 
-    
+On Windows CMD,
 
-    ```
-    conda activate hf_download
-    hf download unsloth/DeepSeek-R1-0528-GGUF --local-dir unsloth/DeepSeekR1-GGUF --include "*Q8_0*"  --token hf_YOUR_USER_ACCESS_TOKEN --max-workers 1
+```
+conda activate hf_download
+hf download unsloth/DeepSeek-R1-0528-GGUF --local-dir unsloth/DeepSeekR1-GGUF --include "*Q8_0*"  --token hf_YOUR_USER_ACCESS_TOKEN --max-workers 1
 
-    mkdir C:\work\hf
-    llama-gguf-split --merge unsloth/DeepSeekR1-GGUF/Q8_0/DeepSeek-R1-0528-Q8_0-00001-of-00015.gguf C:/work/hf/DeepSeek-R1-0528-Q8_0.gguf
+mkdir C:\work\hf
+llama-gguf-split --merge unsloth/DeepSeekR1-GGUF/Q8_0/DeepSeek-R1-0528-Q8_0-00001-of-00015.gguf C:/work/hf/DeepSeek-R1-0528-Q8_0.gguf
 
-    rmdir /s /q unsloth
+rmdir /s /q unsloth
 
-    llama-cli -m C:/work/hf/DeepSeek-R1-0528-Q8_0.gguf -p "Hello. Please answer with OK only." --temp 1.0 --top-p 0.95 --min-p 0.01 -c 4096 -t 10
+llama-cli -m C:/work/hf/DeepSeek-R1-0528-Q8_0.gguf -p "Hello. Please answer with OK only." --temp 1.0 --top-p 0.95 --min-p 0.01 -c 4096 -t 10
 
-    llama-server -m C:/work/hf/DeepSeek-R1-0528-Q8_0.gguf -c 4096 -t 10 --parallel 1 --host 0.0.0.0 --port 8080 --api-key "a"
-    ```
+llama-server -m C:/work/hf/DeepSeek-R1-0528-Q8_0.gguf -c 4096 -t 10 --parallel 1 --host 0.0.0.0 --port 8080 --api-key "a"
+```
+
+## How to use DeepSeek-V3.1-Terminus
+
+On Windows CMD,
+
+```
+conda activate hf_download
+for %x in (00001 00002 00003 00004 00005 00006 00007 00008 00009 00010 00011 00012 00013 00014 00015 00016 00017) do hf download hf://unsloth/DeepSeek-V3.1-Terminus-GGUF/UD-Q8_K_XL/DeepSeek-V3.1-Terminus-UD-Q8_K_XL-%x-of-00017.gguf --local-dir unsloth/DeepSeekV3.1-Terminus-GGUF --token hf_YOUR_USER_ACCESS_TOKEN
+
+mkdir C:\work\hf
+llama-gguf-split --merge unsloth/DeepSeekV3.1-Terminus-GGUF/UD-Q8_K_XL/DeepSeek-V3.1-Terminus-UD-Q8_K_XL-00001-of-00017.gguf C:/work/hf/DeepSeek-V3.1-Terminus-UD-Q8_K_XL.gguf
+
+rmdir /s /q unsloth
+
+llama-cli --model C:/work/hf/DeepSeek-V3.1-Terminus-UD-Q8_K_XL.gguf --prompt "Please answer with OK only." --jinja --threads-batch 10 --temp 0.6 --top-p 0.95 --min-p 0.01 --ctx-size 4096 --parallel 1 -t 20 --single-turn -ngl 0 -b 512 -ub 512
+
+llama-server --model C:/work/hf/DeepSeek-V3.1-Terminus-UD-Q8_K_XL.gguf --jinja  --skip-chat-parsing --reasoning-format none --threads-batch 10 --temp 0.6 --top-p 0.95 --min-p 0.01 --ctx-size 8192 -t 20 -ngl 0 -b 512 -ub 512 --parallel 1 --host 0.0.0.0 --port 8080 --api-key "a" 
+```

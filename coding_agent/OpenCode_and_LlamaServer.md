@@ -1,0 +1,63 @@
+# OpenCode動かし方
+
+## 用意するもの
+
+ - OS: Windows 11 Pro
+ - CPU: IntelまたはAMDのCPU
+ - GPU: NVIDIA Geforce RTX 5090
+ - メモリ: 256GB以上
+
+## llama.cppのセットアップ
+
+llama.cppのReleasesページに行って、Windows CUDA13版と、そのすぐ右のリンクのCUDA 13.3 DLLsを持ってきて展開、CUDA 13.3 DLLファイルをllama.cppの展開ディレクトリに配置、PATHを通します(重要)。  https://github.com/ggml-org/llama.cpp
+
+MiniForgeをダウンロードしてインストールします。 https://github.com/conda-forge/miniforge/releases/download/25.3.1-0/Miniforge3-25.3.1-0-Windows-x86_64.exe
+
+MiniForge Promptを開いて、condaのhf_download環境を作成します
+
+```
+mkdir -p C:\work
+cd /d C:\work
+conda create -y -n hf_download python=3.12
+conda activate hf_download
+conda install -y pip
+pip install -U pip
+pip install -U huggingface_hub hf_transfer
+```
+
+unsloth/DeepSeek-V4-Flash-0731-UD-Q8_K_XL.ggufをダウンロードします
+
+```
+mkdir -p C:\hf
+cd /d C:\hf
+
+for %x in (00001 00002 00003 00004 00005) do hf download hf://unsloth/DeepSeek-V4-Flash-0731-GGUF/UD-Q8_K_XL/DeepSeek-V4-Flash-0731-UD-Q8_K_XL-%x-of-00005.gguf --local-dir C:\hf 
+
+llama-gguf-split --merge unsloth/DeepSeek-V4-Flash-0731-GGUF/UD-Q8_K_XL/DeepSeek-V4-Flash-0731-UD-Q8_K_XL-00001-of-00005.gguf C:/hf/DeepSeek-V4-Flash-0731-UD-Q8_K_XL.gguf 
+
+
+```
+
+以下のように入力しllama-serverを起動します。
+ - --threadsと、--threads-batchに、CPUコア数引く1程度の値をセットします。
+
+```
+llama-server --model C:/hf/DeepSeek-V4-Flash-0731-UD-Q8_K_XL.gguf --reasoning off --ctx-size 262144 --flash-attn on --parallel 1 --no-cont-batching --load-mode none --batch-size 4096 --ubatch-size 4096 --cache-type-k q8_0 --cache-type-v q8_0 --ctx-checkpoints 0 --cache-ram 0 --threads 24 --threads-batch 24 --jinja --log-verbosity 4  --timeout 3600  --host 0.0.0.0 --port 8888 
+```
+
+OpenCodeのGitHubのReleasesページに行って、opencode-desktop-win-x64.exe を取得、インストール。 https://github.com/anomalyco/opencode/
+
+OpenCodeを起動、新しいセッションを作成、修正したいソースコードのディレクトリを指定。入力欄の下のほうにLLMのモデル名をクリックしモデルを管理、右上のプロバイダーに接続、
+
+ - OpenAI互換のカスタムプロバイダー、
+ - プロバイダーIDをlocalPC, 
+ - 表示名をlocalPC, 
+ - ベースURLをhttp://127.0.0.1:8888/v1
+ - APIキーを空欄、
+ - モデルをdeepseek-v4-flash-0731、
+ - 表示名をDeepSeekV4Flash0731、
+ - ヘッダー(オプション)を空欄
+ 
+ 以上の設定を行い送信ボタンを押すとモデルが切り替わるので、OpenCodeをいったん終了(重要)。
+ 
+ もう一度OpenCodeを起動すると使用開始できます。

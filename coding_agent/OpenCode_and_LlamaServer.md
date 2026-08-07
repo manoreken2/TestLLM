@@ -49,7 +49,7 @@ cd /d C:\hf
 
 for %x in (00001 00002 00003 00004 00005) do hf download hf://unsloth/DeepSeek-V4-Flash-0731-GGUF/UD-Q8_K_XL/DeepSeek-V4-Flash-0731-UD-Q8_K_XL-%x-of-00005.gguf --local-dir C:\hf 
 
-llama-gguf-split --merge unsloth/DeepSeek-V4-Flash-0731-GGUF/UD-Q8_K_XL/DeepSeek-V4-Flash-0731-UD-Q8_K_XL-00001-of-00005.gguf C:/hf/DeepSeek-V4-Flash-0731-UD-Q8_K_XL.gguf 
+llama-gguf-split --merge UD-Q8_K_XL/DeepSeek-V4-Flash-0731-UD-Q8_K_XL-00001-of-00005.gguf C:/hf/DeepSeek-V4-Flash-0731-UD-Q8_K_XL.gguf 
 ```
 
 以下のように入力しllama-serverを起動します。

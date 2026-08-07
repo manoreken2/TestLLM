@@ -27,7 +27,7 @@ C:\app\llamacppにPATHを通します(重要)。  設定→システム→バー
 
 環境変数が正しくセットされたことを確認。CMDを開いて、llamaと打って、llamaの使用方法が表示されたらOK。
 
-MiniForgeをダウンロードしてインストールします。 https://github.com/conda-forge/miniforge/releases/download/25.3.1-0/Miniforge3-25.3.1-0-Windows-x86_64.exe
+MiniForgeをダウンロードしてインストールします。 https://github.com/conda-forge/miniforge/releases/
 
 MiniForge Promptを開いて、condaのhf_download環境を作成します
 

@@ -25,6 +25,8 @@ llama.cppのReleasesページに行って、Windows CUDA13版と、そのすぐ�
 C:\app\llamacppにPATHを通します(重要)。  設定→システム→バージョン情報→システムの詳細設定→環境変数→ユーザー環境変数のPathを選択状態にして編集→新規→参照→C:\app\llamacpp
 あとはOKを押す。
 
+環境変数が正しくセットされたことを確認。CMDを開いて、llamaと打って、llamaの使用方法が表示されたらOK。
+
 MiniForgeをダウンロードしてインストールします。 https://github.com/conda-forge/miniforge/releases/download/25.3.1-0/Miniforge3-25.3.1-0-Windows-x86_64.exe
 
 MiniForge Promptを開いて、condaのhf_download環境を作成します

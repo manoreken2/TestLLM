@@ -23,7 +23,7 @@ https://www.nvidia.com/en-us/drivers/
 llama.cppのReleasesページに行って、Windows CUDA13版と、そのすぐ右のリンクのCUDA 13.3 DLLsを持ってきてC:\app\llamacppに展開、CUDA 13.3 DLLファイルを同じフォルダーに配置。 https://github.com/ggml-org/llama.cpp
 
 C:\app\llamacppにPATHを通します(重要)。  設定→システム→バージョン情報→システムの詳細設定→環境変数→ユーザー環境変数のPathを選択状態にして編集→新規→参照→C:\app\llamacpp
-あとはOK、OK、OK、OK
+あとはOKを押す。
 
 MiniForgeをダウンロードしてインストールします。 https://github.com/conda-forge/miniforge/releases/download/25.3.1-0/Miniforge3-25.3.1-0-Windows-x86_64.exe
 

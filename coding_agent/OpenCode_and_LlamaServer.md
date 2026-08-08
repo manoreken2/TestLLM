@@ -67,7 +67,7 @@ OpenCodeのGitHubのReleasesページに行って、opencode-desktop-win-x64.exe
  - OpenAI互換のカスタムプロバイダー、
  - プロバイダーIDをlocal_pc, 
  - 表示名をlocal_pc, 
- - ベースURLをhttp://127.0.0.1:8888/v1
+ - ベースURLを `http://127.0.0.1:8888/v1`
  - APIキーを空欄、
  - モデルをdeepseek-v4-flash-0731、
  - 表示名をDeepSeekV4Flash0731、

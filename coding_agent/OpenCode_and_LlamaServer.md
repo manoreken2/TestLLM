@@ -73,6 +73,10 @@ OpenCodeのGitHubのReleasesページに行って、opencode-desktop-win-x64.exe
  - 表示名をDeepSeekV4Flash0731、
  - ヘッダー(オプション)を空欄
  
- 以上の設定を行い送信ボタンを押すとモデルが切り替わるので、OpenCodeをいったん終了(重要)。
+ 以上の設定を行い送信ボタンを押す。
  
- もう一度OpenCodeを起動すると使用開始できます。
+ OpenCodeをいったん終了(重要)。
+ 
+ もう一度OpenCodeを起動すると、モデル一覧の下のほうに local_pcのDeepSeekV4Flash0731が現れ、ローカルのDeepSeekでOpenCodeが動きます。
+
+ 

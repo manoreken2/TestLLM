@@ -62,7 +62,7 @@ llama-server --model C:/hf/DeepSeek-V4-Flash-0731-UD-Q8_K_XL.gguf --reasoning of
 
 OpenCodeのGitHubのReleasesページに行って、opencode-desktop-win-x64.exe を取得、インストール。 https://github.com/anomalyco/opencode/
 
-OpenCodeを起動、新しいセッションを作成、修正したいソースコードのディレクトリを指定。入力欄の下のほうにLLMのモデル名をクリックしモデルを管理、右上のプロバイダーに接続、
+インストール完了するとOpenCodeが起動し、新しいセッションが作成される。修正したいソースコードのディレクトリを指定。入力欄の下のほうにLLMのモデル名をクリックしモデルを管理、右上のプロバイダーに接続、
 
  - OpenAI互換のカスタムプロバイダー、
  - プロバイダーIDをlocalPC, 

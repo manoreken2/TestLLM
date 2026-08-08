@@ -64,13 +64,13 @@ OpenCodeのGitHubのReleasesページに行って、opencode-desktop-win-x64.exe
 
 インストール完了するとOpenCodeが起動し、新しいセッションが作成される。入力欄の下のほうにLLMのモデル名をクリックしモデルを管理、その他70以上のプロバイダーを見るをクリック。
 
- - OpenAI互換のカスタムプロバイダー、
- - プロバイダーIDをlocal_pc, 
- - 表示名をlocal_pc, 
+ - OpenAI互換のカスタムプロバイダーを選択
+ - プロバイダーIDをlocal_pc
+ - 表示名をlocal_pc
  - ベースURLを `http://127.0.0.1:8888/v1`
- - APIキーを空欄、
- - モデルをdeepseek-v4-flash-0731、
- - 表示名をDeepSeekV4Flash0731、
+ - APIキーを空欄
+ - モデルをdeepseek-v4-flash-0731
+ - 表示名をDeepSeekV4Flash0731
  - ヘッダー(オプション)を空欄
  
  以上の設定を行い送信ボタンを押す。

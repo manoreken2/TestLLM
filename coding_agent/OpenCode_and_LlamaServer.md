@@ -13,6 +13,9 @@
  - 長いパスを有効にします
  - 開発者モードを有効にします
 
+エクスプローラーを開いて、隠しファイル、隠しフォルダーを表示します
+ - フォルダー オプション→表示タブ→詳細設定のファイルとフォルダーの表示→隠しファイル、隠しフォルダー、および隠しドライブを表示するをチェック
+
 ## NVIDIAドライバのインストール
 
 NVIDIAグラフィックスドライバーをインストール。
@@ -57,7 +60,7 @@ CMDに以下のように入力しllama-serverを起動します。
  - srv update_slots: all slots are idleと表示されたら起動完了。
 
 ```
-llama-server --model C:/hf/DeepSeek-V4-Flash-0731-UD-Q8_K_XL.gguf --reasoning off --ctx-size 262144 --flash-attn on --parallel 1 --no-cont-batching --load-mode none --batch-size 4096 --ubatch-size 4096 --cache-type-k q8_0 --cache-type-v q8_0 --ctx-checkpoints 0 --cache-ram 0 --threads 24 --threads-batch 24 --jinja --log-verbosity 4  --timeout 3600  --host 0.0.0.0 --port 8888 
+llama-server --model C:/hf/DeepSeek-V4-Flash-0731-UD-Q8_K_XL.gguf --reasoning off --ctx-size 131072 --flash-attn on --parallel 1 --no-cont-batching --load-mode none --batch-size 4096 --ubatch-size 4096 --cache-type-k q8_0 --cache-type-v q8_0 --ctx-checkpoints 0 --cache-ram 0 --threads 24 --threads-batch 24 --jinja --log-verbosity 4  --timeout 3600  --host 0.0.0.0 --port 8888 
 ```
 
 OpenCodeのGitHubのReleasesページに行って、opencode-desktop-win-x64.exe を取得、インストール。 https://github.com/anomalyco/opencode/
@@ -79,4 +82,24 @@ OpenCodeのGitHubのReleasesページに行って、opencode-desktop-win-x64.exe
  
  もう一度OpenCodeを起動すると、モデル一覧の下のほうに local_pcのDeepSeekV4Flash0731が現れ、ローカルのDeepSeekでOpenCodeが動きます。
 
+ ## コンテキストサイズの設定
+
+llama-server起動時に、 --ctx-size 131072と指定しました。
+これをopencodeの設定にも記述します。
  
+エクスプローラーで `%USERPROFILE%/.config/opencode` を開き、中のopencode.jsoncをメモ帳で開きます。DeepSeekV4Flash0731の設定が書かれている箇所に、以下のように `"limit"` の設定を追記します。
+
+ ```
+     "models": {
+       "deepseek-v4-flash-0731": {
+          "name": "DeepSeekV4Flash0731",
+          "reasoning": false,
+          "limit": {
+            "context": 131000,
+            "output": 65536
+          }
+        }
+     }
+```
+
+

@@ -5,7 +5,7 @@
  - OS: Windows 11 Pro
  - CPU: IntelまたはAMDのCPU
  - GPU: NVIDIA Geforce RTX 5090
- - メモリ: 256GB以上
+ - メモリ: 192 GB以上
 
 ## Windowsの設定
 

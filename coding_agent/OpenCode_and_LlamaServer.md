@@ -95,11 +95,37 @@ llama-server起動時に、 --ctx-size 131072と指定しました。
           "name": "DeepSeekV4Flash0731",
           "reasoning": false,
           "limit": {
-            "context": 131000,
+            "context": 131072,
             "output": 65536
           }
         }
      }
 ```
 
+## Reasoningを有効にする方法
+
+llama-server起動時に以下のように、`--reasoning off `を指定しないで起動すると有効になります。
+
+```
+llama-server --model C:/hf/DeepSeek-V4-Flash-0731-UD-Q8_K_XL.gguf --ctx-size 131072 --flash-attn on --parallel 1 --no-cont-batching --load-mode none --batch-size 4096 --ubatch-size 4096 --cache-type-k q8_0 --cache-type-v q8_0 --ctx-checkpoints 0 --cache-ram 0 --threads 24 --threads-batch 24 --jinja --log-verbosity 4  --timeout 3600  --host 0.0.0.0 --port 8888 
+```
+
+さらに、opencode.jsoncを以下のように変更します。
+
+```
+      "models": {
+        "DSv4F0731q8Think": {
+          "name": "DSv4F0731q8(Think)",
+          "reasoning": true,
+          "limit": {
+            "context": 131072,
+            "output": 65536
+          }
+        },
+```
+
+OpenCodeを起動して、モデル一覧から `DSv4F0731q8(Think)`を選択すると、Reasoningの選択肢が出ます。
+この切り替えが機能しているかは試していないのでわかりませんが、非力なコンピューターでHighは選ばないほうが良いです。
+
+![reasoning menu](reasoning_on.png)
 

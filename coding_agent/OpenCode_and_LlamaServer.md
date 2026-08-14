@@ -104,7 +104,7 @@ llama-server起動時に、 --ctx-size 131072と指定しました。
 
 ## Reasoningを有効にする方法
 
-llama-server起動時に以下のように、`--reasoning off `を指定しないで起動すると有効になります。
+llama-server起動時に以下のように、`--reasoning off `を指定せず起動すると有効になります。
 
 ```
 llama-server --model C:/hf/DeepSeek-V4-Flash-0731-UD-Q8_K_XL.gguf --ctx-size 131072 --flash-attn on --parallel 1 --no-cont-batching --load-mode none --batch-size 4096 --ubatch-size 4096 --cache-type-k q8_0 --cache-type-v q8_0 --ctx-checkpoints 0 --cache-ram 0 --threads 24 --threads-batch 24 --jinja --log-verbosity 4  --timeout 3600  --host 0.0.0.0 --port 8888 
@@ -124,8 +124,11 @@ llama-server --model C:/hf/DeepSeek-V4-Flash-0731-UD-Q8_K_XL.gguf --ctx-size 131
         },
 ```
 
-OpenCodeを起動して、モデル一覧から `DSv4F0731q8(Think)`を選択すると、Reasoningの選択肢が出ます。
-この切り替えが機能しているかは試していないのでわかりませんが、非力なコンピューターでHighは選ばないほうが良いです。
+OpenCodeを起動し、モデル一覧から `DSv4F0731q8(Think)`を選択すると、Reasoningの選択肢が現れます。
+
+Reasoningを有効にすると、回答文を出力する前に長考するようになります。
+
+この切り替えが機能するか試していないのでわかりませんが、非力なコンピューターでHighを選ばないのが無難です。
 
 ![reasoning menu](reasoning_on.png)
 

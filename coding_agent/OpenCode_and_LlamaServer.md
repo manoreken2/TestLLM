@@ -59,6 +59,14 @@ CMDに以下のように入力しllama-serverを起動します。
  - --threadsと、--threads-batchに、CPUコア数引く1程度の値をセットします。
  - srv update_slots: all slots are idleと表示されたら起動完了。
 
+理想的設定( --swa-full有り)
+
+```
+llama-server --model C:/hf/DeepSeek-V4-Flash-0731-UD-Q8_K_XL.gguf --reasoning off --ctx-size 131072 --flash-attn on --parallel 1 --no-cont-batching --load-mode none --batch-size 4096 --ubatch-size 4096 --cache-type-k q8_0 --cache-type-v q8_0 --ctx-checkpoints 0 --cache-ram 0 --threads 24 --threads-batch 24 --jinja --log-verbosity 4 --swa-full --timeout 3600  --host 0.0.0.0 --port 8888 
+```
+
+理想的設定で動作しない場合用の設定( --swa-full無し)
+
 ```
 llama-server --model C:/hf/DeepSeek-V4-Flash-0731-UD-Q8_K_XL.gguf --reasoning off --ctx-size 131072 --flash-attn on --parallel 1 --no-cont-batching --load-mode none --batch-size 4096 --ubatch-size 4096 --cache-type-k q8_0 --cache-type-v q8_0 --ctx-checkpoints 0 --cache-ram 0 --threads 24 --threads-batch 24 --jinja --log-verbosity 4  --timeout 3600  --host 0.0.0.0 --port 8888 
 ```

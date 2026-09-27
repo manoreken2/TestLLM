@@ -61,6 +61,8 @@ pip install hf_download
 
 続けてDeepSeek-V4-flashダウンロードし、C:\hf\DeepSeek-V4-Flash-0731-UD-Q8_K_XL.gguf 作成。
 
+Miniforgeプロンプトに以下のように入力。
+
 ```
 cd /d C:\hf
 for %x in (00001 00002 00003 00004 00005) do hf download hf://unsloth/DeepSeek-V4-Flash-0731-GGUF/UD-Q8_K_XL/DeepSeek-V4-Flash-0731-UD-Q8_K_XL-%x-of-00005.gguf --local-dir C:/hf/
@@ -149,6 +151,8 @@ OpenCodeをいったん終了
 OpenCodeを起動
 
 LocalPCプロバイダーのDSV4FL0731が選択されていることを確認
+
+![reasoning menu](reasoning_on.png)
 
 挨拶のメッセージなどを入力し、ローカルPCのllama.cppが動くことを確認。
 
